@@ -4,20 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- iOS PWA Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Eurojackpot">
     
-    <!-- App Icons -->
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" href="apple-touch-icon.png">
 
     <title>Eurojackpot Mega Mavridis Live 3D</title>
     
-    <!-- Three.js Library for 3D Graphics -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     
     <style>
         * {
@@ -30,7 +26,7 @@
         }
 
         body {
-            background: #080414;
+            background: radial-gradient(circle at center, #1b0b2e 0%, #06020c 100%);
             color: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -68,77 +64,78 @@
 
         header {
             text-align: center;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            background: rgba(15, 8, 30, 0.7);
+            margin-top: 5px;
+            margin-bottom: 5px;
+            background: rgba(15, 8, 30, 0.75);
             backdrop-filter: blur(10px);
-            padding: 10px 20px;
+            padding: 8px 20px;
             border-radius: 20px;
-            border: 1px solid rgba(241, 196, 15, 0.3);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border: 1px solid rgba(241, 196, 15, 0.4);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
         }
 
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: #f1c40f;
             text-shadow: 0 0 12px rgba(241, 196, 15, 0.8);
         }
 
         .subtitle {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #ff9ff3;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .fairy-status {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #ff9ff3;
             font-weight: bold;
             text-shadow: 0 0 10px rgba(255,159,243,0.8);
-            margin: 10px 0;
-            background: rgba(0,0,0,0.5);
-            padding: 6px 16px;
+            margin: 6px 0;
+            background: rgba(0,0,0,0.6);
+            padding: 5px 15px;
             border-radius: 15px;
+            border: 1px solid rgba(255,159,243,0.3);
         }
 
         .results-panel {
-            background: rgba(18, 10, 36, 0.85);
+            background: rgba(18, 10, 36, 0.9);
             backdrop-filter: blur(12px);
-            border: 2px solid rgba(241, 196, 15, 0.4);
+            border: 2px solid rgba(241, 196, 15, 0.5);
             border-radius: 20px;
             padding: 12px;
             width: 100%;
             margin-top: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         .section-title {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #ffeaa7;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             text-align: center;
         }
 
         .balls-row {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .ball-slot {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: rgba(255,255,255,0.05);
             border: 2px dashed rgba(241, 196, 15, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             color: #f1c40f;
             transition: all 0.4s ease;
@@ -154,7 +151,7 @@
             border: 2px solid #fff;
             color: #000;
             box-shadow: 0 0 15px rgba(241, 196, 15, 0.9);
-            transform: scale(1.08);
+            transform: scale(1.1);
         }
 
         .ball-slot.star-slot.filled {
@@ -167,13 +164,13 @@
             display: flex;
             gap: 10px;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .btn {
             border: none;
-            padding: 14px;
-            font-size: 1rem;
+            padding: 12px;
+            font-size: 0.95rem;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
@@ -198,21 +195,21 @@
         }
 
         .history-box {
-            max-height: 120px;
+            max-height: 100px;
             overflow-y: auto;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 8px;
             background: rgba(0,0,0,0.4);
             border-radius: 12px;
-            padding: 8px;
+            padding: 6px;
         }
 
         .history-item {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #ff9ff3;
             display: flex;
             justify-content: space-between;
-            padding: 4px 0;
+            padding: 3px 0;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
@@ -229,10 +226,10 @@
     <div class="ui-overlay">
         <header class="interactive">
             <h1>Eurojackpot Mega Mavridis</h1>
-            <div class="subtitle">3D Live Magic Draw</div>
+            <div class="subtitle">Magical Live Draw</div>
         </header>
 
-        <div class="fairy-status" id="fairyStatus">🧚‍♀️ Η Νεράιδα περιμένει το πρόσταγμά σου!</div>
+        <div class="fairy-status" id="fairyStatus">🧚‍♀️ Η Νεράιδα ετοιμάζει τα μαγικά μπαλάκια!</div>
 
         <div class="results-panel interactive">
             <div class="section-title">⭐ Βασικοί Αριθμοί (1 - 50)</div>
@@ -251,124 +248,136 @@
             </div>
 
             <div class="controls">
-                <button class="btn btn-main" id="drawBtn" onclick="start3DDraw()">✨ ΕΝΑΡΞΗ ΚΛΗΡΩΣΗΣ</button>
+                <button class="btn btn-main" id="drawBtn" onclick="startMagicalDraw()">🪄 ΜΑΓΙΚΗ ΚΛΗΡΩΣΗ</button>
                 <button class="btn btn-sec" onclick="clearHistory()">🧹</button>
             </div>
 
             <div class="history-box" id="historyBox">
-                <div style="text-align:center; font-size:0.75rem; color:#888;">Ιστορικό Κληρώσεων</div>
+                <div style="text-align:center; font-size:0.7rem; color:#888;">Ιστορικό Κληρώσεων</div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 3D THREE.JS SETUP ---
         let scene, camera, renderer;
-        let drumMain, drumStar, fairy;
+        let drumMain, drumStar, fairyGroup;
         let mainBalls = [], starBalls = [];
-        let isSpinning = false;
+        let isDrawing = false;
 
         function init3D() {
             const container = document.getElementById('canvas-container');
             
             scene = new THREE.Scene();
-            scene.fog = new THREE.FogExp2(0x080414, 0.03);
+            scene.fog = new THREE.FogExp2(0x080414, 0.025);
 
-            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 2, 12);
+            camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 1.5, 11);
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             container.appendChild(renderer.domElement);
 
-            // Lights
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-            scene.add(ambientLight);
+            // Φωτισμός
+            const ambient = new THREE.AmbientLight(0xffffff, 0.9);
+            scene.add(ambient);
 
-            const light1 = new THREE.PointLight(0xf1c40f, 2, 50);
-            light1.position.set(0, 10, 10);
-            scene.add(light1);
+            const pLight1 = new THREE.PointLight(0xf1c40f, 2.5, 40);
+            pLight1.position.set(0, 8, 8);
+            scene.add(pLight1);
 
-            const light2 = new THREE.PointLight(0xe056fd, 2, 50);
-            light2.position.set(-10, -5, 5);
-            scene.add(light2);
+            const pLight2 = new THREE.PointLight(0xe056fd, 2, 30);
+            pLight2.position.set(-6, -2, 5);
+            scene.add(pLight2);
 
-            // Create Glass Drums
-            drumMain = createGlassDrum(-3.2, 2.5, 0x1a8cff);
-            drumStar = createGlassDrum(3.2, 2.5, 0xff3366);
+            // Κληρωτίδες
+            drumMain = createLuxuryDrum(-2.8, 1.8);
+            drumStar = createLuxuryDrum(2.8, 1.8);
 
-            // Create Balls Inside
-            mainBalls = createBallsInside(drumMain, 50, 0xf1c40f);
-            starBalls = createBallsInside(drumStar, 20, 0xff6b81);
+            // Μπαλάκια με αριθμούς μέσα στις κληρωτίδες
+            mainBalls = createNumberedBalls(drumMain, 50, 0xf1c40f);
+            starBalls = createNumberedBalls(drumStar, 20, 0xff6b81);
 
-            // Fairy (Magical Glowing Sphere with Particle Trail)
-            fairy = createFairy();
-            scene.add(fairy);
+            // Τρισδιάστατη Νεράιδα
+            fairyGroup = createDetailedFairy();
+            scene.add(fairyGroup);
 
             window.addEventListener('resize', onWindowResize);
             animate();
         }
 
-        function createGlassDrum(x, y, glowColor) {
+        function createLuxuryDrum(x, y) {
             const group = new THREE.Group();
             group.position.set(x, y, 0);
 
-            // Glass Sphere
-            const geo = new THREE.IcosahedronGeometry(2.2, 3);
+            // Γυάλινη Σφαίρα Κληρωτίδας
+            const geo = new THREE.SphereGeometry(2.1, 32, 32);
             const mat = new THREE.MeshPhysicalMaterial({
                 color: 0xffffff,
                 transparent: true,
-                opacity: 0.35,
-                roughness: 0.1,
-                transmission: 0.9,
-                thickness: 0.8,
+                opacity: 0.3,
+                roughness: 0.05,
+                transmission: 0.95,
+                thickness: 1.2,
                 clearcoat: 1
             });
             const glass = new THREE.Mesh(geo, mat);
             group.add(glass);
 
-            // Metallic Ring Frame
-            const ringGeo = new THREE.TorusGeometry(2.25, 0.08, 16, 100);
-            const ringMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9, roughness: 0.2 });
-            const ring1 = new THREE.Mesh(ringGeo, ringMat);
-            const ring2 = new THREE.Mesh(ringGeo, ringMat);
-            ring2.rotation.x = Math.PI / 2;
-            group.add(ring1);
-            group.add(ring2);
+            // Χρυσή Βάση και Στεφάνη
+            const baseGeo = new THREE.CylinderGeometry(1.2, 1.6, 0.6, 32);
+            const goldMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9, roughness: 0.2 });
+            const base = new THREE.Mesh(baseGeo, goldMat);
+            base.position.y = -2.1;
+            group.add(base);
+
+            const ringGeo = new THREE.TorusGeometry(2.15, 0.06, 16, 100);
+            const ring = new THREE.Mesh(ringGeo, goldMat);
+            group.add(ring);
 
             scene.add(group);
             return group;
         }
 
-        function createBallsInside(drumGroup, count, colorHex) {
+        function createNumberedBalls(drumGroup, count, colorHex) {
             const balls = [];
-            const ballGeo = new THREE.SphereGeometry(0.22, 16, 16);
-            
-            for (let i = 0; i < count; i++) {
-                const ballMat = new THREE.MeshStandardMaterial({
-                    color: colorHex,
-                    roughness: 0.3,
-                    metalness: 0.2
-                });
-                const ball = new THREE.Mesh(ballGeo, ballMat);
+            for (let i = 1; i <= count; i++) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 128;
+                canvas.height = 128;
+                const ctx = canvas.getContext('2d');
                 
-                // Random position inside drum sphere
+                // Σχδίαση μπάλας με αριθμό
+                ctx.fillStyle = (colorHex === 0xf1c40f) ? '#f39c12' : '#e74c3c';
+                ctx.beginPath();
+                ctx.arc(64, 64, 58, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(64, 64, 42, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#000000';
+                ctx.font = 'bold 46px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(i < 10 ? '0' + i : i, 64, 64);
+
+                const texture = new THREE.CanvasTexture(canvas);
+                const mat = new THREE.MeshStandardMaterial({ map: texture, roughness: 0.3 });
+                const ballGeo = new THREE.SphereGeometry(0.22, 24, 24);
+                const ball = new THREE.Mesh(ballGeo, mat);
+
+                // Τυχαία θέση μέσα στη σφαίρα
                 const u = Math.random();
-                const r = 1.5 * Math.cbrt(u);
+                const r = 1.4 * Math.cbrt(u);
                 const theta = Math.random() * Math.PI * 2;
                 const phi = Math.acos(2 * Math.random() - 1);
 
-                ball.position.x = r * Math.sin(phi) * Math.cos(theta);
-                ball.position.y = r * Math.sin(phi) * Math.sin(theta);
-                ball.position.z = r * Math.cos(phi);
-
+                ball.position.set(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi));
                 ball.userData = {
-                    velocity: new THREE.Vector3(
-                        (Math.random() - 0.5) * 0.1,
-                        (Math.random() - 0.5) * 0.1,
-                        (Math.random() - 0.5) * 0.1
-                    )
+                    velocity: new THREE.Vector3((Math.random()-0.5)*0.08, (Math.random()-0.5)*0.08, (Math.random()-0.5)*0.08)
                 };
 
                 drumGroup.add(ball);
@@ -377,55 +386,62 @@
             return balls;
         }
 
-        function createFairy() {
-            const fairyGroup = new THREE.Group();
-            const coreGeo = new THREE.SphereGeometry(0.3, 16, 16);
-            const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-            const core = new THREE.Mesh(coreGeo, coreMat);
-            fairyGroup.add(core);
+        function createDetailedFairy() {
+            const group = new THREE.Group();
+            
+            // Σώμα / Κεφάλι Νεράιδας (Λαμπερή σφαίρα)
+            const bodyMat = new THREE.MeshStandardMaterial({ color: 0xff9ff3, emissive: 0xff6b81, emissiveIntensity: 0.6 });
+            const head = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16), bodyMat);
+            group.add(head);
 
-            const glowGeo = new THREE.SphereGeometry(0.6, 16, 16);
-            const glowMat = new THREE.MeshBasicMaterial({ color: 0xff9ff3, transparent: true, opacity: 0.5 });
-            const glow = new THREE.Mesh(glowGeo, glowMat);
-            fairyGroup.add(glow);
+            // Φτερά Νεράιδας
+            const wingGeo = new THREE.ConeGeometry(0.3, 0.8, 4);
+            const wingMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.7, transmission: 0.9 });
+            
+            const wing1 = new THREE.Mesh(wingGeo, wingMat);
+            wing1.rotation.z = Math.PI / 3;
+            wing1.position.set(-0.3, 0.2, 0);
+            group.add(wing1);
 
-            return fairyGroup;
+            const wing2 = new THREE.Mesh(wingGeo, wingMat);
+            wing2.rotation.z = -Math.PI / 3;
+            wing2.position.set(0.3, 0.2, 0);
+            group.add(wing2);
+
+            group.position.set(0, 4.2, 1);
+            return group;
         }
 
         function animate() {
             requestAnimationFrame(animate);
-
             const time = Date.now() * 0.002;
 
-            // Animate Fairy Floating
-            fairy.position.x = Math.sin(time * 1.5) * 4;
-            fairy.position.y = Math.cos(time * 2) * 1.5 + 3;
-            fairy.position.z = Math.sin(time) * 2 + 2;
+            // Κίνηση Νεράιδας (Πετάει χαριτωμένα πάνω από τις κληρωτίδες)
+            fairyGroup.position.x = Math.sin(time * 1.5) * 3.5;
+            fairyGroup.position.y = Math.cos(time * 2) * 0.4 + 4.2;
+            fairyGroup.rotation.y = Math.sin(time) * 0.3;
 
-            // Rotate Drums & Animate Balls
-            if (isSpinning) {
-                drumMain.rotation.y += 0.08;
-                drumMain.rotation.x += 0.04;
-                drumStar.rotation.y -= 0.08;
-                drumStar.rotation.x -= 0.04;
-
-                mixBalls(mainBalls, 0.12);
-                mixBalls(starBalls, 0.12);
+            // Περιστροφή κληρωτίδων & κίνηση μπαλών
+            if (isDrawing) {
+                drumMain.rotation.y += 0.06;
+                drumStar.rotation.y -= 0.06;
+                updateBalls(mainBalls, 0.1);
+                updateBalls(starBalls, 0.1);
             } else {
-                drumMain.rotation.y += 0.005;
-                drumStar.rotation.y -= 0.005;
-                mixBalls(mainBalls, 0.01);
-                mixBalls(starBalls, 0.01);
+                drumMain.rotation.y += 0.004;
+                drumStar.rotation.y -= 0.004;
+                updateBalls(mainBalls, 0.015);
+                updateBalls(starBalls, 0.015);
             }
 
             renderer.render(scene, camera);
         }
 
-        function mixBalls(ballsList, speedMultiplier) {
+        function updateBalls(ballsList, speed) {
             ballsList.forEach(ball => {
-                ball.position.addScaledVector(ball.userData.velocity, speedMultiplier * 10);
-                if (ball.position.length() > 1.7) {
-                    ball.position.normalize().multiplyScalar(1.7);
+                ball.position.addScaledVector(ball.userData.velocity, speed * 8);
+                if (ball.position.length() > 1.6) {
+                    ball.position.normalize().multiplyScalar(1.6);
                     ball.userData.velocity.reflect(ball.position.clone().normalize());
                 }
             });
@@ -437,16 +453,15 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
-        // --- DRAW LOGIC ---
-        async function start3DDraw() {
-            if (isSpinning) return;
-            isSpinning = true;
+        // --- ΜΑΓΙΚΗ ΡΟΗ ΚΛΗΡΩΣΗΣ (Ένα-ένα τα μπαλάκια) ---
+        async function startMagicalDraw() {
+            if (isDrawing) return;
+            isDrawing = true;
             document.getElementById('drawBtn').disabled = true;
 
             const status = document.getElementById('fairyStatus');
-            status.innerHTML = "🧚‍♀️ Η Νεράιδα ανακατεύει τη μαγική γυάλα...";
+            status.innerHTML = "🧚‍♀️ Η Νεράιδα ανακατεύει τη μαγική κληρωτίδα!";
 
-            // Reset Slots
             const mSlots = document.querySelectorAll('#mainSlots .ball-slot');
             const sSlots = document.querySelectorAll('#starSlots .ball-slot');
             mSlots.forEach(s => { s.innerText = '--'; s.className = 'ball-slot'; });
@@ -455,24 +470,29 @@
             let mains = getRandomUnique(5, 50).sort((a,b) => a-b);
             let stars = getRandomUnique(2, 20).sort((a,b) => a-b);
 
-            await sleep(2000);
+            await sleep(2200);
 
-            status.innerHTML = "✨ Φανέρωση τυχερών αριθμών!";
+            status.innerHTML = "✨ Έρχονται οι τυχεροί βασικοί αριθμοί...";
 
+            // Εμφάνιση βασικών αριθμών έναν-έναν
             for (let i = 0; i < 5; i++) {
-                await sleep(400);
+                await sleep(600);
                 mSlots[i].innerText = mains[i] < 10 ? '0' + mains[i] : mains[i];
                 mSlots[i].classList.add('filled');
             }
 
+            await sleep(500);
+            status.innerHTML = "💫 Σειρά για τους αριθμούς Jackpot!";
+
+            // Εμφάνιση jackpot αριθμών έναν-έναν
             for (let i = 0; i < 2; i++) {
-                await sleep(400);
+                await sleep(600);
                 sSlots[i].innerText = stars[i] < 10 ? '0' + stars[i] : stars[i];
                 sSlots[i].classList.add('filled');
             }
 
-            isSpinning = false;
-            status.innerHTML = "🎉 Η κλήρωση ολοκληρώθηκε!";
+            isDrawing = false;
+            status.innerHTML = "🎉 Η κλήρωση ολοκληρώθηκε με επιτυχία!";
             document.getElementById('drawBtn').disabled = false;
 
             saveToHistory(mains, stars);
@@ -491,7 +511,7 @@
         }
 
         function clearHistory() {
-            document.getElementById('historyBox').innerHTML = '<div style="text-align:center; font-size:0.75rem; color:#888;">Ιστορικό Κληρώσεων</div>';
+            document.getElementById('historyBox').innerHTML = '<div style="text-align:center; font-size:0.7rem; color:#888;">Ιστορικό Κληρώσεων</div>';
         }
 
         function getRandomUnique(count, max) {
@@ -505,7 +525,6 @@
 
         function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-        // Start
         window.onload = init3D;
     </script>
 </body>
