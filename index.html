@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Eurojackpot Mega Mavridis Live</title>
     
-    <!-- iOS PWA Settings & App Icon -->
+    <!-- iOS PWA Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Eurojackpot">
@@ -25,7 +25,7 @@
         html, body {
             width: 100vw;
             height: 100vh;
-            overflow: hidden; /* Όχι scrolling */
+            overflow: hidden;
             background: radial-gradient(circle at center, #140b2b 0%, #070314 100%);
             color: #ffffff;
             display: flex;
@@ -47,19 +47,19 @@
 
         header {
             text-align: center;
-            margin-top: 5px;
+            margin-top: 4px;
             z-index: 2;
         }
 
         h1 {
-            font-size: 1.35rem;
+            font-size: 1.3rem;
             color: #f1c40f;
             text-shadow: 0 0 15px rgba(241, 196, 15, 0.8);
             letter-spacing: 1px;
         }
 
         .subtitle {
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             color: #ff9ff3;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -68,8 +68,8 @@
         /* ✨ Νεράιδα */
         .fairy-container {
             position: fixed;
-            top: 8vh;
-            left: 5vw;
+            top: 7vh;
+            left: 4vw;
             z-index: 100;
             pointer-events: none;
             transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
@@ -78,20 +78,20 @@
         }
 
         .fairy-avatar {
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,159,243,0.1) 70%, transparent 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 38px;
+            font-size: 35px;
             position: relative;
         }
 
         .fairy-wand-tip {
             position: absolute;
-            top: 8px;
+            top: 6px;
             right: 2px;
             width: 8px;
             height: 8px;
@@ -102,18 +102,18 @@
 
         @keyframes fairyFloat {
             0%, 100% { transform: translateY(0px) rotate(-3deg); }
-            50% { transform: translateY(-10px) rotate(3deg); }
+            50% { transform: translateY(-8px) rotate(3deg); }
         }
 
-        .fairy-container.moving-to-main { transform: translate(15vw, 12vh) scale(1.1); }
-        .fairy-container.moving-to-stars { transform: translate(65vw, 12vh) scale(1.1); }
+        .fairy-container.moving-to-main { transform: translate(15vw, 10vh) scale(1.1); }
+        .fairy-container.moving-to-stars { transform: translate(65vw, 10vh) scale(1.1); }
 
         .fairy-banner {
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #ff9ff3;
             text-shadow: 0 0 10px rgba(255,159,243,0.8);
-            min-height: 22px;
+            min-height: 20px;
             font-weight: bold;
             z-index: 2;
         }
@@ -132,7 +132,7 @@
             background: rgba(25, 12, 50, 0.8);
             border: 1.5px solid rgba(241, 196, 15, 0.4);
             border-radius: 18px;
-            padding: 10px 6px;
+            padding: 8px 5px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -142,18 +142,18 @@
         }
 
         .drum-title {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: bold;
             color: #ffeaa7;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             text-align: center;
         }
 
         .drum-3d-wrapper {
             position: relative;
-            width: 130px;
-            height: 130px;
-            margin-bottom: 8px;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 6px;
             perspective: 600px;
         }
 
@@ -174,8 +174,8 @@
             bottom: 4px;
             left: 50%;
             transform: translateX(-50%);
-            width: 32px;
-            height: 18px;
+            width: 30px;
+            height: 16px;
             background: linear-gradient(135deg, #b8860b, #ffd700);
             border-radius: 6px 6px 0 0;
             border: 1px solid #fff;
@@ -197,13 +197,13 @@
 
         .ball-inner {
             position: absolute;
-            width: 18px;
-            height: 18px;
+            width: 17px;
+            height: 17px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #ffffff, #f1c40f);
             color: #140b2b;
             font-weight: bold;
-            font-size: 0.55rem;
+            font-size: 0.52rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -222,15 +222,15 @@
         }
 
         .slot {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             background: #19102f;
             border: 2px dashed #6c5ce7;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: bold;
             color: #a29bfe;
             transition: all 0.4s;
@@ -241,13 +241,13 @@
             border: 2px solid #f1c40f;
             color: #fff;
             transform: scale(1.1);
-            box-shadow: 0 0 12px rgba(241, 196, 15, 0.9);
+            box-shadow: 0 0 10px rgba(241, 196, 15, 0.9);
         }
 
         .star-slot.filled {
             background: radial-gradient(circle at 30% 30%, #ff6b81, #c0392b);
             border: 2px solid #ff7675;
-            box-shadow: 0 0 12px rgba(255, 107, 129, 0.9);
+            box-shadow: 0 0 10px rgba(255, 107, 129, 0.9);
         }
 
         .control-panel {
@@ -262,8 +262,8 @@
             background: linear-gradient(135deg, #e056fd, #686de0);
             color: #fff;
             border: none;
-            padding: 12px;
-            font-size: 0.95rem;
+            padding: 11px;
+            font-size: 0.9rem;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
@@ -275,52 +275,79 @@
             background: rgba(235, 77, 75, 0.8);
             color: #fff;
             border: none;
-            padding: 12px;
-            font-size: 0.85rem;
+            padding: 11px;
+            font-size: 0.8rem;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
             flex: 1;
         }
 
-        /* Αποθηκευμένες στήλες */
+        /* Αποθηκευμένες Στήλες Ιστορικού με Ημερομηνία & Ώρα */
         .history-panel {
-            background: rgba(25, 12, 50, 0.75);
-            border: 1px solid rgba(241, 196, 15, 0.3);
+            background: rgba(25, 12, 50, 0.85);
+            border: 1px solid rgba(241, 196, 15, 0.35);
             border-radius: 16px;
-            padding: 8px 12px;
+            padding: 8px 10px;
             width: 100%;
             max-width: 480px;
-            max-height: 100px;
+            max-height: 120px;
             overflow-y: auto;
             z-index: 2;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .history-item {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.7rem;
-            padding: 3px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            flex-direction: column;
+            gap: 3px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            padding: 5px 8px;
+            margin-bottom: 4px;
+            font-size: 0.68rem;
         }
 
-        .history-nums {
-            color: #ffeaa7;
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            color: #ff9ff3;
             font-weight: bold;
+        }
+
+        .history-balls-row {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .mini-ball {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #f39c12, #d35400);
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.58rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mini-star {
+            background: radial-gradient(circle at 30% 30%, #ff6b81, #c0392b);
         }
 
         .flying-ball {
             position: fixed;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             z-index: 1000;
             transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             pointer-events: none;
@@ -370,17 +397,17 @@
 
     <div class="control-panel">
         <button class="btn-draw" id="btnDraw" onclick="startMagicDraw()">🪄 ΕΚΚΙΝΗΣΗ ΚΛΗΡΩΣΗΣ</button>
-        <button class="btn-clear" onclick="clearHistory()">🧹</button>
+        <button class="btn-clear" onclick="clearHistory()">🧹 ΚΑΘΑΡΙΣΜΟΣ</button>
     </div>
 
     <div class="history-panel" id="historyList">
-        <div style="text-align:center; font-size:0.7rem; color:#888;">Ιστορικό Αποθηκευμένων Στηλών</div>
+        <div style="text-align:center; font-size:0.68rem; color:#888;" id="emptyMsg">🌟 Αποθηκευμένες Στήλες (με Ημερομηνία & Ώρα)</div>
     </div>
 
     <script>
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
-        let particles = [], magicSparkles = [];
+        let particles = [];
 
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas);
@@ -443,16 +470,16 @@
 
             for (let i = 1; i <= TOTAL_MAIN; i++) {
                 const ball = document.createElement('div'); ball.className = 'ball-inner'; ball.innerText = i;
-                sphereMain.appendChild(ball); initBallPhysics(ball, 130); ballsMain.push(ball);
+                sphereMain.appendChild(ball); initBallPhysics(ball, 120); ballsMain.push(ball);
             }
             for (let i = 1; i <= TOTAL_STARS; i++) {
                 const ball = document.createElement('div'); ball.className = 'ball-inner star-ball-inner'; ball.innerText = i;
-                sphereStars.appendChild(ball); initBallPhysics(ball, 130); ballsStars.push(ball);
+                sphereStars.appendChild(ball); initBallPhysics(ball, 120); ballsStars.push(ball);
             }
         }
 
         function initBallPhysics(ball, size) {
-            ball.x = 15 + Math.random() * (size - 40); ball.y = 15 + Math.random() * (size - 40);
+            ball.x = 12 + Math.random() * (size - 35); ball.y = 12 + Math.random() * (size - 35);
             ball.vx = (Math.random() - 0.5) * 3.5; ball.vy = (Math.random() - 0.5) * 3.5;
             ball.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
         }
@@ -467,7 +494,7 @@
             balls.forEach(ball => {
                 if (ball.hidden) return;
                 ball.x += ball.vx * speedFactor; ball.y += ball.vy * speedFactor;
-                const radius = 9, center = size / 2;
+                const radius = 8.5, center = size / 2;
                 let dx = ball.x + radius - center, dy = ball.y + radius - center;
                 let dist = Math.sqrt(dx * dx + dy * dy);
 
@@ -485,8 +512,8 @@
         }
 
         function animate() {
-            updatePhysics(ballsMain, 130, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereMain'));
-            updatePhysics(ballsStars, 130, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereStars'));
+            updatePhysics(ballsMain, 120, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereMain'));
+            updatePhysics(ballsStars, 120, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereStars'));
             requestAnimationFrame(animate);
         }
         initDrums(); animate();
@@ -531,8 +558,10 @@
 
             fairy.className = "fairy-container";
 
-            const timeString = new Date().toLocaleTimeString('el-GR', { hour:'2-digit', minute:'2-digit' });
-            savedColumns.unshift({ mains: [...drawnMains], stars: [...drawnStars], time: timeString });
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('el-GR') + ' ' + now.toLocaleTimeString('el-GR', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+
+            savedColumns.unshift({ mains: [...drawnMains], stars: [...drawnStars], datetime: dateStr });
             renderHistory();
 
             banner.innerHTML = "🎉 Η κλήρωση ολοκληρώθηκε!";
@@ -571,14 +600,28 @@
             savedColumns.forEach((col, index) => {
                 let itemDiv = document.createElement('div');
                 itemDiv.className = 'history-item';
-                itemDiv.innerHTML = `<span>🕒 ${col.time}</span> <span class="history-nums">${col.mains.map(n=>n<10?'0'+n:n).join(' ')} + ${col.stars.map(n=>n<10?'0'+n:n).join(' ')}</span>`;
+                
+                let mainsHtml = col.mains.map(n => `<div class="mini-ball">${n<10?'0'+n:n}</div>`).join('');
+                let starsHtml = col.stars.map(n => `<div class="mini-ball mini-star">${n<10?'0'+n:n}</div>`).join('');
+
+                itemDiv.innerHTML = `
+                    <div class="history-header">
+                        <span>Στήλη #${savedColumns.length - index}</span>
+                        <span>🕒 ${col.datetime}</span>
+                    </div>
+                    <div class="history-balls-row">
+                        ${mainsHtml}
+                        <span style="color:#f1c40f; font-weight:bold; margin:0 2px;">+</span>
+                        ${starsHtml}
+                    </div>
+                `;
                 listElem.appendChild(itemDiv);
             });
         }
 
         function clearHistory() {
             savedColumns = [];
-            document.getElementById('historyList').innerHTML = '<div style="text-align:center; font-size:0.7rem; color:#888;">Ιστορικό Αποθηκευμένων Στηλών</div>';
+            document.getElementById('historyList').innerHTML = '<div style="text-align:center; font-size:0.68rem; color:#888;" id="emptyMsg">🌟 Αποθηκευμένες Στήλες (με Ημερομηνία & Ώρα)</div>';
             document.getElementById('fairyBanner').innerHTML = "🧚‍♀️ Η νεράιδα περιμένει!";
         }
 
