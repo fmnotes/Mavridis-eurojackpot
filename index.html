@@ -47,75 +47,74 @@
 
         header {
             text-align: center;
-            margin-top: 4px;
+            margin-top: 2px;
             z-index: 2;
         }
 
         h1 {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             color: #f1c40f;
             text-shadow: 0 0 15px rgba(241, 196, 15, 0.8);
             letter-spacing: 1px;
         }
 
         .subtitle {
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             color: #ff9ff3;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        /* ✨ Νεράιδα */
-        .fairy-container {
-            position: fixed;
-            top: 7vh;
-            left: 4vw;
-            z-index: 100;
-            pointer-events: none;
-            transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
-            animation: fairyFloat 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 15px #ff9ff3);
+        /* ✨ Κεντρική Μαγική Νεράιδα (Centerpiece Fairy) */
+        .center-fairy-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            margin: 2px 0;
         }
 
-        .fairy-avatar {
-            width: 55px;
-            height: 55px;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,159,243,0.1) 70%, transparent 100%);
+        .center-fairy-circle {
+            width: 65px;
+            height: 65px;
+            background: radial-gradient(circle, rgba(224,86,253,0.3) 0%, rgba(104,109,224,0.15) 70%, transparent 100%);
+            border: 2px solid rgba(255, 159, 243, 0.6);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 35px;
+            font-size: 38px;
+            box-shadow: 0 0 20px rgba(255, 159, 243, 0.6), inset 0 0 10px rgba(241, 196, 15, 0.5);
+            animation: centerFairyFloat 3s ease-in-out infinite;
             position: relative;
         }
 
         .fairy-wand-tip {
             position: absolute;
-            top: 6px;
-            right: 2px;
+            top: 8px;
+            right: 4px;
             width: 8px;
             height: 8px;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 10px #fff, 0 0 20px #ff9ff3;
+            box-shadow: 0 0 12px #fff, 0 0 22px #ff9ff3;
         }
 
-        @keyframes fairyFloat {
-            0%, 100% { transform: translateY(0px) rotate(-3deg); }
-            50% { transform: translateY(-8px) rotate(3deg); }
+        @keyframes centerFairyFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-5px) scale(1.05); }
         }
-
-        .fairy-container.moving-to-main { transform: translate(15vw, 10vh) scale(1.1); }
-        .fairy-container.moving-to-stars { transform: translate(65vw, 10vh) scale(1.1); }
 
         .fairy-banner {
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: #ff9ff3;
             text-shadow: 0 0 10px rgba(255,159,243,0.8);
-            min-height: 20px;
+            min-height: 18px;
             font-weight: bold;
             z-index: 2;
+            margin-top: 3px;
         }
 
         /* Κληρωτίδες */
@@ -132,7 +131,7 @@
             background: rgba(25, 12, 50, 0.8);
             border: 1.5px solid rgba(241, 196, 15, 0.4);
             border-radius: 18px;
-            padding: 8px 5px;
+            padding: 6px 5px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -142,18 +141,18 @@
         }
 
         .drum-title {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: bold;
             color: #ffeaa7;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             text-align: center;
         }
 
         .drum-3d-wrapper {
             position: relative;
-            width: 120px;
-            height: 120px;
-            margin-bottom: 6px;
+            width: 110px;
+            height: 110px;
+            margin-bottom: 5px;
             perspective: 600px;
         }
 
@@ -162,7 +161,7 @@
             height: 100%;
             border-radius: 50%;
             background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.3), rgba(15, 8, 40, 0.92));
-            border: 4px solid #d4af37;
+            border: 3.5px solid #d4af37;
             position: relative;
             overflow: hidden;
             box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 20px rgba(241, 196, 15, 0.4);
@@ -174,14 +173,14 @@
             bottom: 4px;
             left: 50%;
             transform: translateX(-50%);
-            width: 30px;
-            height: 16px;
+            width: 28px;
+            height: 15px;
             background: linear-gradient(135deg, #b8860b, #ffd700);
-            border-radius: 6px 6px 0 0;
+            border-radius: 5px 5px 0 0;
             border: 1px solid #fff;
             z-index: 10;
             transition: transform 0.3s;
-            font-size: 7px;
+            font-size: 6.5px;
             font-weight: bold;
             color: #000;
             display: flex;
@@ -190,20 +189,20 @@
         }
 
         .hatch.open {
-            transform: translateX(-50%) translateY(12px);
+            transform: translateX(-50%) translateY(10px);
             background: #ff6b81;
             color: #fff;
         }
 
         .ball-inner {
             position: absolute;
-            width: 17px;
-            height: 17px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #ffffff, #f1c40f);
             color: #140b2b;
             font-weight: bold;
-            font-size: 0.52rem;
+            font-size: 0.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -222,15 +221,15 @@
         }
 
         .slot {
-            width: 26px;
-            height: 26px;
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
             background: #19102f;
             border: 2px dashed #6c5ce7;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: bold;
             color: #a29bfe;
             transition: all 0.4s;
@@ -262,8 +261,8 @@
             background: linear-gradient(135deg, #e056fd, #686de0);
             color: #fff;
             border: none;
-            padding: 11px;
-            font-size: 0.9rem;
+            padding: 10px;
+            font-size: 0.88rem;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
@@ -275,8 +274,8 @@
             background: rgba(235, 77, 75, 0.8);
             color: #fff;
             border: none;
-            padding: 11px;
-            font-size: 0.8rem;
+            padding: 10px;
+            font-size: 0.78rem;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
@@ -288,10 +287,10 @@
             background: rgba(25, 12, 50, 0.85);
             border: 1px solid rgba(241, 196, 15, 0.35);
             border-radius: 16px;
-            padding: 8px 10px;
+            padding: 6px 10px;
             width: 100%;
             max-width: 480px;
-            max-height: 120px;
+            max-height: 110px;
             overflow-y: auto;
             z-index: 2;
             margin-bottom: 2px;
@@ -300,12 +299,12 @@
         .history-item {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
             background: rgba(0, 0, 0, 0.4);
             border-radius: 8px;
-            padding: 5px 8px;
-            margin-bottom: 4px;
-            font-size: 0.68rem;
+            padding: 4px 8px;
+            margin-bottom: 3px;
+            font-size: 0.65rem;
         }
 
         .history-header {
@@ -322,13 +321,13 @@
         }
 
         .mini-ball {
-            width: 18px;
-            height: 18px;
+            width: 17px;
+            height: 17px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #f39c12, #d35400);
             color: #fff;
             font-weight: bold;
-            font-size: 0.58rem;
+            font-size: 0.55rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -340,14 +339,14 @@
 
         .flying-ball {
             position: fixed;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             z-index: 1000;
             transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             pointer-events: none;
@@ -356,10 +355,6 @@
 </head>
 <body>
 
-    <div class="fairy-container" id="fairyContainer">
-        <div class="fairy-avatar">🧚‍♀️<div class="fairy-wand-tip"></div></div>
-    </div>
-
     <canvas id="magicCanvas"></canvas>
 
     <header>
@@ -367,7 +362,14 @@
         <div class="subtitle">✨ Magical Live Draw ✨</div>
     </header>
 
-    <div class="fairy-banner" id="fairyBanner">🧚‍♀️ Η νεράιδα περιμένει!</div>
+    <!-- ✨ Κεντρική Νεράιδα & Μήνυμα -->
+    <div class="center-fairy-wrapper">
+        <div class="center-fairy-circle">
+            🧚‍♀️
+            <div class="fairy-wand-tip"></div>
+        </div>
+        <div class="fairy-banner" id="fairyBanner">🧚‍♀️ Η μαγική νεράιδα περιμένει!</div>
+    </div>
 
     <div class="top-section">
         <div class="drum-section">
@@ -401,7 +403,7 @@
     </div>
 
     <div class="history-panel" id="historyList">
-        <div style="text-align:center; font-size:0.68rem; color:#888;" id="emptyMsg">🌟 Αποθηκευμένες Στήλες (με Ημερομηνία & Ώρα)</div>
+        <div style="text-align:center; font-size:0.65rem; color:#888;" id="emptyMsg">🌟 Αποθηκευμένες Στήλες (με Ημερομηνία & Ώρα)</div>
     </div>
 
     <script>
@@ -470,16 +472,16 @@
 
             for (let i = 1; i <= TOTAL_MAIN; i++) {
                 const ball = document.createElement('div'); ball.className = 'ball-inner'; ball.innerText = i;
-                sphereMain.appendChild(ball); initBallPhysics(ball, 120); ballsMain.push(ball);
+                sphereMain.appendChild(ball); initBallPhysics(ball, 110); ballsMain.push(ball);
             }
             for (let i = 1; i <= TOTAL_STARS; i++) {
                 const ball = document.createElement('div'); ball.className = 'ball-inner star-ball-inner'; ball.innerText = i;
-                sphereStars.appendChild(ball); initBallPhysics(ball, 120); ballsStars.push(ball);
+                sphereStars.appendChild(ball); initBallPhysics(ball, 110); ballsStars.push(ball);
             }
         }
 
         function initBallPhysics(ball, size) {
-            ball.x = 12 + Math.random() * (size - 35); ball.y = 12 + Math.random() * (size - 35);
+            ball.x = 10 + Math.random() * (size - 30); ball.y = 10 + Math.random() * (size - 30);
             ball.vx = (Math.random() - 0.5) * 3.5; ball.vy = (Math.random() - 0.5) * 3.5;
             ball.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
         }
@@ -494,14 +496,14 @@
             balls.forEach(ball => {
                 if (ball.hidden) return;
                 ball.x += ball.vx * speedFactor; ball.y += ball.vy * speedFactor;
-                const radius = 8.5, center = size / 2;
+                const radius = 8, center = size / 2;
                 let dx = ball.x + radius - center, dy = ball.y + radius - center;
                 let dist = Math.sqrt(dx * dx + dy * dy);
 
-                if (dist > center - radius - 8) {
+                if (dist > center - radius - 7) {
                     let angle = Math.atan2(dy, dx);
-                    ball.x = center - radius + (center - radius - 8) * Math.cos(angle) - radius;
-                    ball.y = center - radius + (center - radius - 8) * Math.sin(angle) - radius;
+                    ball.x = center - radius + (center - radius - 7) * Math.cos(angle) - radius;
+                    ball.y = center - radius + (center - radius - 7) * Math.sin(angle) - radius;
                     let normalX = Math.cos(angle), normalY = Math.sin(angle);
                     let dot = ball.vx * normalX + ball.vy * normalY;
                     ball.vx -= 2 * dot * normalX; ball.vy -= 2 * dot * normalY;
@@ -512,8 +514,8 @@
         }
 
         function animate() {
-            updatePhysics(ballsMain, 120, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereMain'));
-            updatePhysics(ballsStars, 120, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereStars'));
+            updatePhysics(ballsMain, 110, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereMain'));
+            updatePhysics(ballsStars, 110, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereStars'));
             requestAnimationFrame(animate);
         }
         initDrums(); animate();
@@ -524,10 +526,7 @@
             document.getElementById('btnDraw').disabled = true;
 
             const banner = document.getElementById('fairyBanner');
-            const fairy = document.getElementById('fairyContainer');
-
-            fairy.className = "fairy-container moving-to-main";
-            banner.innerHTML = "🧚‍♀️ Η νεράιδα ανακατεύει τη γυάλα!";
+            banner.innerHTML = "🧚‍♀️ Η νεράιδα ανακατεύει τις κληρωτίδες!";
             playSound('magic');
 
             const mainSlots = document.querySelectorAll('#slotsMain .slot');
@@ -539,24 +538,21 @@
             let drawnMains = getRandomUnique(5, TOTAL_MAIN).sort((a,b) => a-b);
             let drawnStars = getRandomUnique(2, TOTAL_STARS).sort((a,b) => a-b);
 
-            await sleep(1800);
+            await sleep(1500);
 
             for (let i = 0; i < 5; i++) {
                 await extractBall(ballsMain, drawnMains[i], document.getElementById('hatchMain'), mainSlots[i], false);
-                await sleep(300);
+                await sleep(250);
             }
 
-            fairy.className = "fairy-container moving-to-stars";
             banner.innerHTML = "💫 Σειρά για το Jackpot!";
             playSound('magic');
-            await sleep(800);
+            await sleep(600);
 
             for (let i = 0; i < 2; i++) {
                 await extractBall(ballsStars, drawnStars[i], document.getElementById('hatchStars'), starSlots[i], true);
-                await sleep(300);
+                await sleep(250);
             }
-
-            fairy.className = "fairy-container";
 
             const now = new Date();
             const dateStr = now.toLocaleDateString('el-GR') + ' ' + now.toLocaleTimeString('el-GR', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
@@ -564,14 +560,14 @@
             savedColumns.unshift({ mains: [...drawnMains], stars: [...drawnStars], datetime: dateStr });
             renderHistory();
 
-            banner.innerHTML = "🎉 Η κλήρωση ολοκληρώθηκε!";
+            banner.innerHTML = "🎉 Η κλήρωση ολοκληρώθηκε με μαγεία!";
             isDrawing = false;
             document.getElementById('btnDraw').disabled = false;
         }
 
         async function extractBall(ballsArray, targetNum, hatchElem, slotElem, isStar) {
             hatchElem.classList.add('open'); playSound('tick');
-            await sleep(250);
+            await sleep(200);
 
             let ballElem = ballsArray.find(b => parseInt(b.innerText) === targetNum && !b.hidden) || ballsArray.find(b => !b.hidden);
             if (ballElem) { ballElem.hidden = true; ballElem.style.display = 'none'; }
@@ -587,9 +583,9 @@
             flyer.style.left = startRect.left + 'px'; flyer.style.top = startRect.top + 'px';
             document.body.appendChild(flyer);
 
-            setTimeout(() => { flyer.style.left = targetRect.left + 'px'; flyer.style.top = targetRect.top + 'px'; }, 40);
+            setTimeout(() => { flyer.style.left = targetRect.left + 'px'; flyer.style.top = targetRect.top + 'px'; }, 30);
 
-            await sleep(500); flyer.remove();
+            await sleep(450); flyer.remove();
             slotElem.innerText = targetNum < 10 ? '0' + targetNum : targetNum;
             slotElem.classList.add('filled'); playSound('tink');
         }
@@ -621,8 +617,8 @@
 
         function clearHistory() {
             savedColumns = [];
-            document.getElementById('historyList').innerHTML = '<div style="text-align:center; font-size:0.68rem; color:#888;" id="emptyMsg">🌟 Αποθηκευμένες Στήλες (με Ημερομηνία & Ώρα)</div>';
-            document.getElementById('fairyBanner').innerHTML = "🧚‍♀️ Η νεράιδα περιμένει!";
+            document.getElementById('historyList').innerHTML = '<div style="text-align:center; font-size:0.65rem; color:#888;" id="emptyMsg">🌟 Αποθηκευμένες Στήλες (με Ημερομηνία & Ώρα)</div>';
+            document.getElementById('fairyBanner').innerHTML = "🧚‍♀️ Η μαγική νεράιδα περιμένει!";
         }
 
         function getRandomUnique(count, max) {
