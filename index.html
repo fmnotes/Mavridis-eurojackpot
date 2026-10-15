@@ -26,13 +26,13 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background: radial-gradient(circle at center, #140b2b 0%, #070314 100%);
+            background: radial-gradient(circle at center, #180c35 0%, #070314 100%);
             color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: env(safe-area-inset-top) 12px env(safe-area-inset-bottom) 12px;
+            padding: env(safe-area-inset-top) 12px env(safe-area-inset-bottom) 10px;
         }
 
         #magicCanvas {
@@ -65,7 +65,7 @@
             letter-spacing: 2px;
         }
 
-        /* ✨ Κεντρική Μαγική Νεράιδα (Centerpiece Fairy) */
+        /* ✨ Μεγαλύτερη & Πανέμορφη Κεντρική Νεράιδα */
         .center-fairy-wrapper {
             display: flex;
             flex-direction: column;
@@ -76,45 +76,66 @@
         }
 
         .center-fairy-circle {
-            width: 65px;
-            height: 65px;
-            background: radial-gradient(circle, rgba(224,86,253,0.3) 0%, rgba(104,109,224,0.15) 70%, transparent 100%);
-            border: 2px solid rgba(255, 159, 243, 0.6);
+            width: 82px;
+            height: 82px;
+            background: radial-gradient(circle, rgba(255, 159, 243, 0.45) 0%, rgba(104, 109, 224, 0.25) 60%, rgba(241, 196, 15, 0.1) 100%);
+            border: 2.5px solid #ff9ff3;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 38px;
-            box-shadow: 0 0 20px rgba(255, 159, 243, 0.6), inset 0 0 10px rgba(241, 196, 15, 0.5);
-            animation: centerFairyFloat 3s ease-in-out infinite;
+            font-size: 48px;
+            box-shadow: 0 0 25px rgba(255, 159, 243, 0.8), 0 0 40px rgba(241, 196, 15, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.6);
+            animation: centerFairyFloat 2.8s ease-in-out infinite;
             position: relative;
         }
 
-        .fairy-wand-tip {
+        /* 🪄 Μαγικό Ραβδί & Αστερόσκονη */
+        .fairy-wand {
             position: absolute;
-            top: 8px;
-            right: 4px;
-            width: 8px;
-            height: 8px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 12px #fff, 0 0 22px #ff9ff3;
+            top: 2px;
+            right: -2px;
+            font-size: 20px;
+            filter: drop-shadow(0 0 10px #ffffff) drop-shadow(0 0 18px #ff9ff3);
+            animation: wandPulse 1.4s ease-in-out infinite alternate;
         }
+
+        .sparkle-star {
+            position: absolute;
+            font-size: 12px;
+            color: #ffeaa7;
+            text-shadow: 0 0 8px #ffd700;
+            animation: sparkleGlow 1.8s ease-in-out infinite alternate;
+        }
+
+        .star-1 { top: -4px; left: 6px; animation-delay: 0s; }
+        .star-2 { bottom: 2px; right: 4px; animation-delay: 0.6s; }
+        .star-3 { bottom: -2px; left: 10px; animation-delay: 1.2s; }
 
         @keyframes centerFairyFloat {
             0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-5px) scale(1.05); }
+            50% { transform: translateY(-7px) scale(1.06); }
+        }
+
+        @keyframes wandPulse {
+            0% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 8px #fff); }
+            100% { transform: rotate(12deg) scale(1.2); filter: drop-shadow(0 0 20px #ff9ff3) drop-shadow(0 0 10px #ffeaa7); }
+        }
+
+        @keyframes sparkleGlow {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.3); }
         }
 
         .fairy-banner {
             text-align: center;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             color: #ff9ff3;
-            text-shadow: 0 0 10px rgba(255,159,243,0.8);
+            text-shadow: 0 0 12px rgba(255, 159, 243, 0.9);
             min-height: 18px;
             font-weight: bold;
             z-index: 2;
-            margin-top: 3px;
+            margin-top: 4px;
         }
 
         /* Κληρωτίδες */
@@ -150,8 +171,8 @@
 
         .drum-3d-wrapper {
             position: relative;
-            width: 110px;
-            height: 110px;
+            width: 105px;
+            height: 105px;
             margin-bottom: 5px;
             perspective: 600px;
         }
@@ -196,13 +217,13 @@
 
         .ball-inner {
             position: absolute;
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #ffffff, #f1c40f);
             color: #140b2b;
             font-weight: bold;
-            font-size: 0.5rem;
+            font-size: 0.48rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -221,15 +242,15 @@
         }
 
         .slot {
-            width: 25px;
-            height: 25px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             background: #19102f;
             border: 2px dashed #6c5ce7;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: bold;
             color: #a29bfe;
             transition: all 0.4s;
@@ -290,7 +311,7 @@
             padding: 6px 10px;
             width: 100%;
             max-width: 480px;
-            max-height: 110px;
+            max-height: 105px;
             overflow-y: auto;
             z-index: 2;
             margin-bottom: 2px;
@@ -321,13 +342,13 @@
         }
 
         .mini-ball {
-            width: 17px;
-            height: 17px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #f39c12, #d35400);
             color: #fff;
             font-weight: bold;
-            font-size: 0.55rem;
+            font-size: 0.52rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -362,11 +383,14 @@
         <div class="subtitle">✨ Magical Live Draw ✨</div>
     </header>
 
-    <!-- ✨ Κεντρική Νεράιδα & Μήνυμα -->
+    <!-- ✨ Μεγαλύτερη, Εντυπωσιακή Νεράιδα & Μήνυμα -->
     <div class="center-fairy-wrapper">
         <div class="center-fairy-circle">
             🧚‍♀️
-            <div class="fairy-wand-tip"></div>
+            <div class="fairy-wand">🪄</div>
+            <div class="sparkle-star star-1">✨</div>
+            <div class="sparkle-star star-2">⭐</div>
+            <div class="sparkle-star star-3">✨</div>
         </div>
         <div class="fairy-banner" id="fairyBanner">🧚‍♀️ Η μαγική νεράιδα περιμένει!</div>
     </div>
@@ -472,16 +496,16 @@
 
             for (let i = 1; i <= TOTAL_MAIN; i++) {
                 const ball = document.createElement('div'); ball.className = 'ball-inner'; ball.innerText = i;
-                sphereMain.appendChild(ball); initBallPhysics(ball, 110); ballsMain.push(ball);
+                sphereMain.appendChild(ball); initBallPhysics(ball, 105); ballsMain.push(ball);
             }
             for (let i = 1; i <= TOTAL_STARS; i++) {
                 const ball = document.createElement('div'); ball.className = 'ball-inner star-ball-inner'; ball.innerText = i;
-                sphereStars.appendChild(ball); initBallPhysics(ball, 110); ballsStars.push(ball);
+                sphereStars.appendChild(ball); initBallPhysics(ball, 105); ballsStars.push(ball);
             }
         }
 
         function initBallPhysics(ball, size) {
-            ball.x = 10 + Math.random() * (size - 30); ball.y = 10 + Math.random() * (size - 30);
+            ball.x = 10 + Math.random() * (size - 28); ball.y = 10 + Math.random() * (size - 28);
             ball.vx = (Math.random() - 0.5) * 3.5; ball.vy = (Math.random() - 0.5) * 3.5;
             ball.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
         }
@@ -496,7 +520,7 @@
             balls.forEach(ball => {
                 if (ball.hidden) return;
                 ball.x += ball.vx * speedFactor; ball.y += ball.vy * speedFactor;
-                const radius = 8, center = size / 2;
+                const radius = 7.5, center = size / 2;
                 let dx = ball.x + radius - center, dy = ball.y + radius - center;
                 let dist = Math.sqrt(dx * dx + dy * dy);
 
@@ -514,8 +538,8 @@
         }
 
         function animate() {
-            updatePhysics(ballsMain, 110, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereMain'));
-            updatePhysics(ballsStars, 110, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereStars'));
+            updatePhysics(ballsMain, 105, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereMain'));
+            updatePhysics(ballsStars, 105, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereStars'));
             requestAnimationFrame(animate);
         }
         initDrums(); animate();
