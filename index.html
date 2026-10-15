@@ -2,27 +2,37 @@
 <html lang="el">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eurojackpot Mega Mavridis Live - Μαγικό Δάσος Νεράιδας</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Eurojackpot Mega Mavridis Live</title>
+    
+    <!-- iOS PWA Settings & App Icon -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Eurojackpot">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="apple-touch-icon.png">
+
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        body {
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden; /* Όχι scrolling */
             background: radial-gradient(circle at center, #140b2b 0%, #070314 100%);
             color: #ffffff;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            padding: 25px;
-            overflow-x: hidden;
-            position: relative;
+            justify-content: space-between;
+            padding: env(safe-area-inset-top) 12px env(safe-area-inset-bottom) 12px;
         }
 
         #magicCanvas {
@@ -35,140 +45,116 @@
             z-index: 0;
         }
 
-        header, .main-layout, .control-panel, .bottom-panels {
-            position: relative;
+        header {
+            text-align: center;
+            margin-top: 5px;
             z-index: 2;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
         h1 {
-            font-size: 2.6rem;
+            font-size: 1.35rem;
             color: #f1c40f;
-            text-shadow: 0 0 30px rgba(241, 196, 15, 0.9), 0 0 15px #ff6b81;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+            text-shadow: 0 0 15px rgba(241, 196, 15, 0.8);
+            letter-spacing: 1px;
         }
 
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 0.7rem;
             color: #ff9ff3;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 0 0 12px rgba(255, 159, 243, 0.8);
+            letter-spacing: 2px;
         }
 
-        /* ✨ Τρισδιάστατη, Φωτεινή, Αιωρούμενη Νεράιδα υψηλής αισθητικής */
+        /* ✨ Νεράιδα */
         .fairy-container {
             position: fixed;
-            top: 12vh;
-            left: 8vw;
+            top: 8vh;
+            left: 5vw;
             z-index: 100;
             pointer-events: none;
-            transition: transform 1.8s cubic-bezier(0.25, 1, 0.5, 1);
-            animation: fairyFloat 3.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 25px #ff9ff3) drop-shadow(0 0 10px #f1c40f);
+            transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+            animation: fairyFloat 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px #ff9ff3);
         }
 
         .fairy-avatar {
-            width: 110px;
-            height: 110px;
+            width: 60px;
+            height: 60px;
             background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,159,243,0.1) 70%, transparent 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 70px;
+            font-size: 38px;
             position: relative;
-            animation: fairyGlow 2s ease-in-out infinite alternate;
         }
 
         .fairy-wand-tip {
             position: absolute;
-            top: 15px;
-            right: 5px;
-            width: 12px;
-            height: 12px;
+            top: 8px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 15px #fff, 0 0 30px #ff9ff3, 0 0 45px #f1c40f;
-            animation: wandSparkle 0.5s ease-in-out infinite alternate;
+            box-shadow: 0 0 10px #fff, 0 0 20px #ff9ff3;
         }
 
         @keyframes fairyFloat {
-            0%, 100% { transform: translateY(0px) rotate(-4deg) scale(1); }
-            50% { transform: translateY(-20px) rotate(4deg) scale(1.05); }
+            0%, 100% { transform: translateY(0px) rotate(-3deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
         }
 
-        @keyframes fairyGlow {
-            from { box-shadow: 0 0 15px rgba(255,159,243,0.4); }
-            to { box-shadow: 0 0 35px rgba(255,159,243,0.9), 0 0 50px rgba(241,196,15,0.6); }
+        .fairy-container.moving-to-main { transform: translate(15vw, 12vh) scale(1.1); }
+        .fairy-container.moving-to-stars { transform: translate(65vw, 12vh) scale(1.1); }
+
+        .fairy-banner {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #ff9ff3;
+            text-shadow: 0 0 10px rgba(255,159,243,0.8);
+            min-height: 22px;
+            font-weight: bold;
+            z-index: 2;
         }
 
-        @keyframes wandSparkle {
-            from { transform: scale(0.8); opacity: 0.7; }
-            to { transform: scale(1.4); opacity: 1; }
-        }
-
-        /* Θέσεις κίνησης νεράιδας */
-        .fairy-container.moving-to-main {
-            transform: translate(28vw, 2vh) scale(1.15) rotate(5deg);
-        }
-        .fairy-container.moving-to-stars {
-            transform: translate(58vw, 2vh) scale(1.15) rotate(-5deg);
-        }
-
-        .main-layout {
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-            width: 100%;
-            max-width: 1350px;
-            align-items: center;
-        }
-
+        /* Κληρωτίδες */
         .top-section {
             display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
+            gap: 10px;
             justify-content: center;
             width: 100%;
+            max-width: 480px;
+            z-index: 2;
         }
 
         .drum-section {
-            background: rgba(25, 12, 50, 0.75);
-            border: 2px solid rgba(241, 196, 15, 0.45);
-            border-radius: 26px;
-            padding: 22px;
+            background: rgba(25, 12, 50, 0.8);
+            border: 1.5px solid rgba(241, 196, 15, 0.4);
+            border-radius: 18px;
+            padding: 10px 6px;
             flex: 1;
-            min-width: 340px;
-            max-width: 560px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 20px 45px rgba(0,0,0,0.8), inset 0 0 25px rgba(255, 107, 129, 0.2);
-            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
         }
 
         .drum-title {
-            font-size: 1.25rem;
+            font-size: 0.75rem;
             font-weight: bold;
             color: #ffeaa7;
-            margin-bottom: 12px;
+            margin-bottom: 6px;
             text-align: center;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 234, 167, 0.6);
         }
 
         .drum-3d-wrapper {
             position: relative;
-            width: 240px;
-            height: 240px;
-            margin-bottom: 15px;
-            perspective: 900px;
+            width: 130px;
+            height: 130px;
+            margin-bottom: 8px;
+            perspective: 600px;
         }
 
         .drum-sphere {
@@ -176,68 +162,52 @@
             height: 100%;
             border-radius: 50%;
             background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.3), rgba(15, 8, 40, 0.92));
-            border: 6px solid #d4af37;
+            border: 4px solid #d4af37;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.95), 0 0 35px rgba(241, 196, 15, 0.5);
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 20px rgba(241, 196, 15, 0.4);
             transform-style: preserve-3d;
-            transition: transform 0.1s ease;
-        }
-
-        .drum-sphere::after {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 25px;
-            width: 75px;
-            height: 38px;
-            background: rgba(255, 255, 255, 0.25);
-            border-radius: 50%;
-            transform: rotate(-30deg);
-            pointer-events: none;
         }
 
         .hatch {
             position: absolute;
-            bottom: 10px;
+            bottom: 4px;
             left: 50%;
             transform: translateX(-50%);
-            width: 52px;
-            height: 32px;
+            width: 32px;
+            height: 18px;
             background: linear-gradient(135deg, #b8860b, #ffd700);
-            border-radius: 10px 10px 0 0;
-            border: 2px solid #fff;
+            border-radius: 6px 6px 0 0;
+            border: 1px solid #fff;
             z-index: 10;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.6);
+            transition: transform 0.3s;
+            font-size: 7px;
+            font-weight: bold;
+            color: #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
-            font-weight: bold;
-            color: #000;
         }
 
         .hatch.open {
-            transform: translateX(-50%) translateY(22px) scale(0.8);
+            transform: translateX(-50%) translateY(12px);
             background: #ff6b81;
             color: #fff;
         }
 
         .ball-inner {
             position: absolute;
-            width: 28px;
-            height: 28px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #ffffff, #f1c40f);
             color: #140b2b;
             font-weight: bold;
-            font-size: 0.75rem;
+            font-size: 0.55rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.6);
-            user-select: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.6);
         }
 
         .star-ball-inner {
@@ -247,549 +217,291 @@
 
         .slots-container {
             display: flex;
-            gap: 12px;
+            gap: 4px;
             justify-content: center;
-            margin-top: 5px;
         }
 
         .slot {
-            width: 44px;
-            height: 44px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: #19102f;
-            border: 3px dashed #6c5ce7;
+            border: 2px dashed #6c5ce7;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 0.75rem;
             font-weight: bold;
             color: #a29bfe;
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.7);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s;
         }
 
         .slot.filled {
             background: radial-gradient(circle at 30% 30%, #f39c12, #d35400);
-            border: 3px solid #f1c40f;
+            border: 2px solid #f1c40f;
             color: #fff;
-            transform: scale(1.15) rotate(360deg);
-            box-shadow: 0 0 22px rgba(241, 196, 15, 0.95);
+            transform: scale(1.1);
+            box-shadow: 0 0 12px rgba(241, 196, 15, 0.9);
         }
 
         .star-slot.filled {
             background: radial-gradient(circle at 30% 30%, #ff6b81, #c0392b);
-            border: 3px solid #ff7675;
-            box-shadow: 0 0 22px rgba(255, 107, 129, 0.95);
+            border: 2px solid #ff7675;
+            box-shadow: 0 0 12px rgba(255, 107, 129, 0.9);
         }
 
         .control-panel {
             display: flex;
-            gap: 20px;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
+            gap: 10px;
             width: 100%;
+            max-width: 480px;
+            z-index: 2;
         }
 
         .btn-draw {
             background: linear-gradient(135deg, #e056fd, #686de0);
             color: #fff;
             border: none;
-            padding: 16px 45px;
-            font-size: 1.25rem;
+            padding: 12px;
+            font-size: 0.95rem;
             font-weight: bold;
-            border-radius: 50px;
+            border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 6px 25px rgba(224, 86, 253, 0.5);
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        .btn-draw:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(224, 86, 253, 0.7);
-            background: linear-gradient(135deg, #f78fb3, #e056fd);
-        }
-
-        .btn-draw:disabled {
-            background: #4b4b61;
-            color: #a4b0be;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
+            flex: 2;
+            box-shadow: 0 4px 15px rgba(224, 86, 253, 0.4);
         }
 
         .btn-clear {
-            background: linear-gradient(135deg, #eb4d4b, #b71540);
+            background: rgba(235, 77, 75, 0.8);
             color: #fff;
             border: none;
-            padding: 16px 30px;
-            font-size: 1.1rem;
+            padding: 12px;
+            font-size: 0.85rem;
             font-weight: bold;
-            border-radius: 50px;
+            border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(235, 77, 75, 0.4);
-            transition: all 0.2s ease;
-        }
-
-        .btn-clear:hover {
-            transform: translateY(-2px);
-            background: linear-gradient(135deg, #ff7979, #eb4d4b);
-        }
-
-        .bottom-panels {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .panel-box {
-            background: rgba(25, 12, 50, 0.75);
-            border: 2px solid rgba(241, 196, 15, 0.35);
-            border-radius: 22px;
-            padding: 22px;
             flex: 1;
-            min-width: 340px;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
-            backdrop-filter: blur(10px);
         }
 
-        .panel-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #f1c40f;
-            margin-bottom: 12px;
-            text-align: center;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .rules-text {
-            font-size: 0.95rem;
-            color: #dfe6e9;
-            line-height: 1.6;
-        }
-
-        .rules-text li {
-            margin-bottom: 8px;
-            margin-left: 20px;
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 200px;
+        /* Αποθηκευμένες στήλες */
+        .history-panel {
+            background: rgba(25, 12, 50, 0.75);
+            border: 1px solid rgba(241, 196, 15, 0.3);
+            border-radius: 16px;
+            padding: 8px 12px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 100px;
             overflow-y: auto;
-            padding-right: 5px;
+            z-index: 2;
+            margin-bottom: 5px;
         }
 
         .history-item {
             display: flex;
-            flex-direction: column;
-            gap: 6px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 14px;
-            padding: 12px 16px;
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        .history-header-row {
-            display: flex;
             justify-content: space-between;
-            font-size: 0.88rem;
-            color: #ff9ff3;
-        }
-
-        .history-balls {
-            display: flex;
-            gap: 8px;
             align-items: center;
-            flex-wrap: wrap;
+            font-size: 0.7rem;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
 
-        .h-ball {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #f39c12, #d35400);
-            border: 2px solid #f1c40f;
-            color: #fff;
+        .history-nums {
+            color: #ffeaa7;
             font-weight: bold;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-        }
-
-        .h-star {
-            background: radial-gradient(circle at 30% 30%, #ff6b81, #c0392b);
-            border: 2px solid #ff7675;
-        }
-
-        .empty-history {
-            text-align: center;
-            color: #a4b0be;
-            font-style: italic;
-            padding: 15px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .flying-ball {
             position: fixed;
-            width: 30px;
-            height: 30px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 0.8rem;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.7);
+            font-size: 0.65rem;
             z-index: 1000;
-            transition: all 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             pointer-events: none;
-        }
-
-        .fairy-banner {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #ff9ff3;
-            text-shadow: 0 0 15px rgba(255,159,243,0.9);
-            margin-bottom: 5px;
-            min-height: 28px;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <!-- 🧚‍♀️ Τρισδιάστατη Μαγική Νεράιδα -->
     <div class="fairy-container" id="fairyContainer">
-        <div class="fairy-avatar">
-            🧚‍♀️
-            <div class="fairy-wand-tip"></div>
-        </div>
+        <div class="fairy-avatar">🧚‍♀️<div class="fairy-wand-tip"></div></div>
     </div>
 
-    <!-- Μαγικό Δάσος & Αστερόσκονη Canvas -->
     <canvas id="magicCanvas"></canvas>
 
     <header>
-        <h1>Eurojackpot Mega Mavridis Live</h1>
-        <div class="subtitle">✨ Παραμυθένια Μαγική Κλήρωση ✨</div>
+        <h1>Eurojackpot Mega Mavridis</h1>
+        <div class="subtitle">✨ Magical Live Draw ✨</div>
     </header>
 
-    <div class="main-layout">
-        
-        <div class="fairy-banner" id="fairyBanner">🧚‍♀️ Η νεράιδα του δάσους περιμένει να ξεκινήσετε τη μαγική κλήρωση!</div>
+    <div class="fairy-banner" id="fairyBanner">🧚‍♀️ Η νεράιδα περιμένει!</div>
 
-        <div class="top-section">
-            <!-- Κληρωτίδα 1: Βασικοί Αριθμοί (1-50) -->
-            <div class="drum-section">
-                <div class="drum-title">⭐ Βασικοί Αριθμοί (1 - 50)</div>
-                <div class="drum-3d-wrapper">
-                    <div class="drum-sphere" id="drumSphereMain">
-                        <div class="hatch" id="hatchMain">EXIT</div>
-                    </div>
-                </div>
-                <div class="slots-container" id="slotsMain">
-                    <div class="slot">--</div>
-                    <div class="slot">--</div>
-                    <div class="slot">--</div>
-                    <div class="slot">--</div>
-                    <div class="slot">--</div>
+    <div class="top-section">
+        <div class="drum-section">
+            <div class="drum-title">⭐ Αριθμοί (1-50)</div>
+            <div class="drum-3d-wrapper">
+                <div class="drum-sphere" id="drumSphereMain">
+                    <div class="hatch" id="hatchMain">EXIT</div>
                 </div>
             </div>
-
-            <!-- Κληρωτίδα 2: Αστέρια (1-20) -->
-            <div class="drum-section">
-                <div class="drum-title">💫 Ειδικό Jackpot / Αστέρια (1 - 20)</div>
-                <div class="drum-3d-wrapper">
-                    <div class="drum-sphere" id="drumSphereStars">
-                        <div class="hatch" id="hatchStars">EXIT</div>
-                    </div>
-                </div>
-                <div class="slots-container" id="slotsStars">
-                    <div class="slot star-slot">--</div>
-                    <div class="slot star-slot">--</div>
-                </div>
+            <div class="slots-container" id="slotsMain">
+                <div class="slot">--</div><div class="slot">--</div><div class="slot">--</div><div class="slot">--</div><div class="slot">--</div>
             </div>
         </div>
 
-        <div class="control-panel">
-            <button class="btn-draw" id="btnDraw" onclick="startMagicDraw()">🪄 ΕΚΚΙΝΗΣΗ ΜΑΓΙΚΗΣ ΚΛΗΡΩΣΗΣ</button>
-            <button class="btn-clear" onclick="clearHistory()">ΚΑΘΑΡΙΣΜΟΣ ΙΣΤΟΡΙΚΟΥ</button>
-        </div>
-
-        <div class="bottom-panels">
-            <!-- Κανόνες Παιχνιδιού -->
-            <div class="panel-box">
-                <div class="panel-title">📜 Σημείωση Κανόνων</div>
-                <ul class="rules-text">
-                    <li>Επιλέγονται <strong>5 τυχαίοι αριθμοί</strong> από το <strong>1 έως το 50</strong> από την πρώτη μαγική κληρωτίδα.</li>
-                    <li>Επιλέγονται <strong>2 αριθμοί</strong> από το <strong>1 έως το 20</strong> για το ειδικό τζακ-ποτ από τη δεύτερη κληρωτίδα.</li>
-                    <li>Κάθε στήλη αποθηκεύεται αυτόματα με την ακριβή ώρα και ημερομηνία της κλήρωσης.</li>
-                </ul>
-            </div>
-
-            <!-- Αποθηκευμένες Στήλες (Ιστορικό) -->
-            <div class="panel-box">
-                <div class="panel-title">🌟 Αποθηκευμένες Στήλες</div>
-                <div class="history-list" id="historyList">
-                    <div class="empty-history" id="emptyMsg">Δεν υπάρχουν αποθηκευμένες στήλες ακόμα. Πατήστε εκκίνηση κλήρωσης!</div>
+        <div class="drum-section">
+            <div class="drum-title">💫 Jackpot (1-20)</div>
+            <div class="drum-3d-wrapper">
+                <div class="drum-sphere" id="drumSphereStars">
+                    <div class="hatch" id="hatchStars">EXIT</div>
                 </div>
             </div>
+            <div class="slots-container" id="slotsStars">
+                <div class="slot star-slot">--</div><div class="slot star-slot">--</div>
+            </div>
         </div>
+    </div>
 
+    <div class="control-panel">
+        <button class="btn-draw" id="btnDraw" onclick="startMagicDraw()">🪄 ΕΚΚΙΝΗΣΗ ΚΛΗΡΩΣΗΣ</button>
+        <button class="btn-clear" onclick="clearHistory()">🧹</button>
+    </div>
+
+    <div class="history-panel" id="historyList">
+        <div style="text-align:center; font-size:0.7rem; color:#888;">Ιστορικό Αποθηκευμένων Στηλών</div>
     </div>
 
     <script>
-        // --- Μαγικό Φόντο & Αστερόσκονη Canvas ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
-        let particles = [];
-        let magicSparkles = [];
+        let particles = [], magicSparkles = [];
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        for (let i = 0; i < 120; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 2.8 + 0.8,
-                speedY: (Math.random() - 0.5) * 0.6,
-                speedX: (Math.random() - 0.5) * 0.6,
-                alpha: Math.random()
-            });
-        }
-
-        function addMagicSparkle(x, y) {
-            for (let i = 0; i < 8; i++) {
-                magicSparkles.push({
-                    x: x,
-                    y: y,
-                    vx: (Math.random() - 0.5) * 6,
-                    vy: (Math.random() - 0.5) * 6,
-                    radius: Math.random() * 3 + 1,
-                    alpha: 1,
-                    color: Math.random() > 0.5 ? '#fff' : '#f1c40f'
-                });
-            }
+        for (let i = 0; i < 70; i++) {
+            particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, radius: Math.random()*2+0.5, speedY: (Math.random()-0.5)*0.5, speedX: (Math.random()-0.5)*0.5, alpha: Math.random() });
         }
 
         function drawMagicBackground() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Γενική αστερόσκονη δάσους
             particles.forEach(p => {
-                p.x += p.speedX;
-                p.y += p.speedY;
-                if (p.x < 0) p.x = canvas.width;
-                if (p.x > canvas.width) p.x = 0;
-                if (p.y < 0) p.y = canvas.height;
-                if (p.y > canvas.height) p.y = 0;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 230, 160, ${Math.abs(Math.sin(Date.now() * 0.002 + p.alpha))})`;
                 ctx.fill();
             });
-
-            // Ενεργά σωματίδια από τη ράβδο της νεράιδας
-            magicSparkles.forEach((s, index) => {
-                s.x += s.vx;
-                s.y += s.vy;
-                s.alpha -= 0.03;
-                if (s.alpha <= 0) {
-                    magicSparkles.splice(index, 1);
-                    return;
-                }
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-                ctx.fillStyle = s.color;
-                ctx.shadowColor = '#ff9ff3';
-                ctx.shadowBlur = 10;
-                ctx.globalAlpha = s.alpha;
-                ctx.fill();
-                ctx.shadowBlur = 0;
-                ctx.globalAlpha = 1;
-            });
-
             requestAnimationFrame(drawMagicBackground);
         }
         drawMagicBackground();
 
-        // --- Λειτουργίες Κλήρωσης & Φυσικής ---
-        const TOTAL_MAIN = 50;
-        const TOTAL_STARS = 20;
+        const TOTAL_MAIN = 50, TOTAL_STARS = 20;
+        let ballsMain = [], ballsStars = [], isDrawing = false, audioCtx = null, savedColumns = [];
 
-        let ballsMain = [];
-        let ballsStars = [];
-        let isDrawing = false;
-        let audioCtx = null;
-        let savedColumns = [];
-
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-        }
+        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
 
         function playSound(type) {
             if (!audioCtx) return;
             try {
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
+                let osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
                 if (type === 'tick') {
                     osc.frequency.setValueAtTime(400 + Math.random() * 200, audioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.04);
+                    gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.03);
                 } else if (type === 'tink') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(1400, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(700, audioCtx.currentTime + 0.15);
-                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.15);
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.12);
                 } else if (type === 'magic') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(1800, audioCtx.currentTime + 0.45);
-                    gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.45);
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1600, audioCtx.currentTime + 0.35);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.35);
                 }
-            } catch(e) {}
+            } catch(e){}
         }
 
         function initDrums() {
             const sphereMain = document.getElementById('drumSphereMain');
             const sphereStars = document.getElementById('drumSphereStars');
-            
             sphereMain.querySelectorAll('.ball-inner').forEach(b => b.remove());
             sphereStars.querySelectorAll('.ball-inner').forEach(b => b.remove());
-
-            ballsMain = [];
-            ballsStars = [];
+            ballsMain = []; ballsStars = [];
 
             for (let i = 1; i <= TOTAL_MAIN; i++) {
-                const ball = document.createElement('div');
-                ball.className = 'ball-inner';
-                ball.innerText = i;
-                sphereMain.appendChild(ball);
-                initBallPhysics(ball, 240);
-                ballsMain.push(ball);
+                const ball = document.createElement('div'); ball.className = 'ball-inner'; ball.innerText = i;
+                sphereMain.appendChild(ball); initBallPhysics(ball, 130); ballsMain.push(ball);
             }
-
             for (let i = 1; i <= TOTAL_STARS; i++) {
-                const ball = document.createElement('div');
-                ball.className = 'ball-inner star-ball-inner';
-                ball.innerText = i;
-                sphereStars.appendChild(ball);
-                initBallPhysics(ball, 240);
-                ballsStars.push(ball);
+                const ball = document.createElement('div'); ball.className = 'ball-inner star-ball-inner'; ball.innerText = i;
+                sphereStars.appendChild(ball); initBallPhysics(ball, 130); ballsStars.push(ball);
             }
         }
 
         function initBallPhysics(ball, size) {
-            ball.x = 25 + Math.random() * (size - 75);
-            ball.y = 25 + Math.random() * (size - 75);
-            ball.vx = (Math.random() - 0.5) * 4.5;
-            ball.vy = (Math.random() - 0.5) * 4.5;
+            ball.x = 15 + Math.random() * (size - 40); ball.y = 15 + Math.random() * (size - 40);
+            ball.vx = (Math.random() - 0.5) * 3.5; ball.vy = (Math.random() - 0.5) * 3.5;
             ball.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
         }
 
         function updatePhysics(balls, size, speedFactor, sphereElem) {
             if (isDrawing) {
-                let rotY = Math.sin(Date.now() / 180) * 10;
-                let rotX = Math.cos(Date.now() / 220) * 10;
-                sphereElem.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-            } else {
-                sphereElem.style.transform = `rotateX(0deg) rotateY(0deg)`;
-            }
+                let rotY = Math.sin(Date.now() / 180) * 8;
+                sphereElem.style.transform = `rotateY(${rotY}deg)`;
+            } else { sphereElem.style.transform = `rotateY(0deg)`; }
 
             let tickPlayed = false;
             balls.forEach(ball => {
                 if (ball.hidden) return;
-
-                ball.x += ball.vx * speedFactor;
-                ball.y += ball.vy * speedFactor;
-
-                const radius = 14;
-                const center = size / 2;
-                let dx = ball.x + radius - center;
-                let dy = ball.y + radius - center;
+                ball.x += ball.vx * speedFactor; ball.y += ball.vy * speedFactor;
+                const radius = 9, center = size / 2;
+                let dx = ball.x + radius - center, dy = ball.y + radius - center;
                 let dist = Math.sqrt(dx * dx + dy * dy);
 
-                if (dist > center - radius - 15) {
+                if (dist > center - radius - 8) {
                     let angle = Math.atan2(dy, dx);
-                    ball.x = center - radius + (center - radius - 15) * Math.cos(angle) - radius;
-                    ball.y = center - radius + (center - radius - 15) * Math.sin(angle) - radius;
-                    
-                    let normalX = Math.cos(angle);
-                    let normalY = Math.sin(angle);
+                    ball.x = center - radius + (center - radius - 8) * Math.cos(angle) - radius;
+                    ball.y = center - radius + (center - radius - 8) * Math.sin(angle) - radius;
+                    let normalX = Math.cos(angle), normalY = Math.sin(angle);
                     let dot = ball.vx * normalX + ball.vy * normalY;
-                    ball.vx -= 2 * dot * normalX;
-                    ball.vy -= 2 * dot * normalY;
-                    
-                    ball.vx += (Math.random() - 0.5) * 3;
-                    ball.vy += (Math.random() - 0.5) * 3;
-
-                    if (isDrawing && !tickPlayed && Math.random() > 0.6) {
-                        playSound('tick');
-                        tickPlayed = true;
-                    }
+                    ball.vx -= 2 * dot * normalX; ball.vy -= 2 * dot * normalY;
+                    if (isDrawing && !tickPlayed && Math.random() > 0.7) { playSound('tick'); tickPlayed = true; }
                 }
-
                 ball.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
             });
         }
 
         function animate() {
-            updatePhysics(ballsMain, 240, isDrawing ? 3.0 : 0.7, document.getElementById('drumSphereMain'));
-            updatePhysics(ballsStars, 240, isDrawing ? 3.0 : 0.7, document.getElementById('drumSphereStars'));
+            updatePhysics(ballsMain, 130, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereMain'));
+            updatePhysics(ballsStars, 130, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereStars'));
             requestAnimationFrame(animate);
         }
+        initDrums(); animate();
 
         async function startMagicDraw() {
             if (isDrawing) return;
-            initAudio();
-            isDrawing = true;
+            initAudio(); isDrawing = true;
             document.getElementById('btnDraw').disabled = true;
 
             const banner = document.getElementById('fairyBanner');
             const fairy = document.getElementById('fairyContainer');
 
-            // 1. Η νεράιδα πετάει στην πρώτη κληρωτίδα
             fairy.className = "fairy-container moving-to-main";
-            banner.innerHTML = "🧚‍♀️ Η μαγική νεράιδα πλησιάζει την κληρωτίδα βασικών αριθμών...";
+            banner.innerHTML = "🧚‍♀️ Η νεράιδα ανακατεύει τη γυάλα!";
             playSound('magic');
-            
-            // Προσθήκη αστερόσκονης στη θέση της νεράιδας
-            let rect = fairy.getBoundingClientRect();
-            addMagicSparkle(rect.left + 50, rect.top + 50);
 
             const mainSlots = document.querySelectorAll('#slotsMain .slot');
             const starSlots = document.querySelectorAll('#slotsStars .slot');
@@ -797,62 +509,43 @@
             starSlots.forEach(s => { s.innerText = '--'; s.className = 'slot star-slot'; });
 
             initDrums();
-
             let drawnMains = getRandomUnique(5, TOTAL_MAIN).sort((a,b) => a-b);
             let drawnStars = getRandomUnique(2, TOTAL_STARS).sort((a,b) => a-b);
 
-            await sleep(2000);
+            await sleep(1800);
 
             for (let i = 0; i < 5; i++) {
                 await extractBall(ballsMain, drawnMains[i], document.getElementById('hatchMain'), mainSlots[i], false);
-                addMagicSparkle(window.innerWidth * 0.35, window.innerHeight * 0.3);
-                await sleep(350);
+                await sleep(300);
             }
 
-            // 2. Η νεράιδα πετάει στη δεύτερη κληρωτίδα (Jackpot)
             fairy.className = "fairy-container moving-to-stars";
-            banner.innerHTML = "💫 Η νεράιδα πετάει στη δεύτερη κληρωτίδα για το ειδικό Jackpot!";
+            banner.innerHTML = "💫 Σειρά για το Jackpot!";
             playSound('magic');
-            addMagicSparkle(window.innerWidth * 0.65, window.innerHeight * 0.3);
-            await sleep(1000);
+            await sleep(800);
 
             for (let i = 0; i < 2; i++) {
                 await extractBall(ballsStars, drawnStars[i], document.getElementById('hatchStars'), starSlots[i], true);
-                addMagicSparkle(window.innerWidth * 0.65, window.innerHeight * 0.3);
-                await sleep(350);
+                await sleep(300);
             }
 
-            // Επιστροφή νεράιδας
             fairy.className = "fairy-container";
 
-            const now = new Date();
-            const timeString = now.toLocaleDateString('el-GR') + ' ' + now.toLocaleTimeString('el-GR');
-
-            savedColumns.push({
-                mains: [...drawnMains],
-                stars: [...drawnStars],
-                time: timeString
-            });
+            const timeString = new Date().toLocaleTimeString('el-GR', { hour:'2-digit', minute:'2-digit' });
+            savedColumns.unshift({ mains: [...drawnMains], stars: [...drawnStars], time: timeString });
             renderHistory();
 
-            banner.innerHTML = "🎉 Η μαγική κλήρωση ολοκληρώθηκε με επιτυχία από τη νεράιδα!";
+            banner.innerHTML = "🎉 Η κλήρωση ολοκληρώθηκε!";
             isDrawing = false;
             document.getElementById('btnDraw').disabled = false;
         }
 
         async function extractBall(ballsArray, targetNum, hatchElem, slotElem, isStar) {
-            hatchElem.classList.add('open');
-            playSound('tick');
-            await sleep(300);
+            hatchElem.classList.add('open'); playSound('tick');
+            await sleep(250);
 
-            let ballElem = ballsArray.find(b => parseInt(b.innerText) === targetNum && !b.hidden);
-            if (!ballElem) ballElem = ballsArray.find(b => !b.hidden);
-            
-            if (ballElem) {
-                ballElem.hidden = true;
-                ballElem.style.display = 'none';
-            }
-
+            let ballElem = ballsArray.find(b => parseInt(b.innerText) === targetNum && !b.hidden) || ballsArray.find(b => !b.hidden);
+            if (ballElem) { ballElem.hidden = true; ballElem.style.display = 'none'; }
             hatchElem.classList.remove('open');
 
             let startRect = hatchElem.getBoundingClientRect();
@@ -860,76 +553,33 @@
 
             let flyer = document.createElement('div');
             flyer.className = 'flying-ball ' + (isStar ? 'star-ball-inner' : '');
-            if (!isStar) {
-                flyer.style.background = 'radial-gradient(circle at 30% 30%, #ffffff, #f1c40f)';
-                flyer.style.color = '#140b2b';
-            }
+            if (!isStar) { flyer.style.background = 'radial-gradient(circle at 30% 30%, #ffffff, #f1c40f)'; flyer.style.color = '#140b2b'; }
             flyer.innerText = targetNum < 10 ? '0' + targetNum : targetNum;
-            flyer.style.left = startRect.left + 'px';
-            flyer.style.top = startRect.top + 'px';
+            flyer.style.left = startRect.left + 'px'; flyer.style.top = startRect.top + 'px';
             document.body.appendChild(flyer);
 
-            setTimeout(() => {
-                flyer.style.left = targetRect.left + 'px';
-                flyer.style.top = targetRect.top + 'px';
-                flyer.style.transform = 'scale(1.15) rotate(360deg)';
-            }, 50);
+            setTimeout(() => { flyer.style.left = targetRect.left + 'px'; flyer.style.top = targetRect.top + 'px'; }, 40);
 
-            await sleep(550);
-            flyer.remove();
-
+            await sleep(500); flyer.remove();
             slotElem.innerText = targetNum < 10 ? '0' + targetNum : targetNum;
-            slotElem.classList.add('filled');
-            playSound('tink');
+            slotElem.classList.add('filled'); playSound('tink');
         }
 
         function renderHistory() {
             const listElem = document.getElementById('historyList');
-            const emptyMsg = document.getElementById('emptyMsg');
-
-            if (savedColumns.length > 0) {
-                if (emptyMsg) emptyMsg.style.display = 'none';
-            }
-
             listElem.innerHTML = '';
             savedColumns.forEach((col, index) => {
                 let itemDiv = document.createElement('div');
                 itemDiv.className = 'history-item';
-
-                let headerRow = document.createElement('div');
-                headerRow.className = 'history-header-row';
-                headerRow.innerHTML = `<span><strong>Στήλη #${index + 1}</strong></span><span>🕒 ${col.time}</span>`;
-                itemDiv.appendChild(headerRow);
-
-                let ballsContainer = document.createElement('div');
-                ballsContainer.className = 'history-balls';
-
-                col.mains.forEach(num => {
-                    let b = document.createElement('div');
-                    b.className = 'h-ball';
-                    b.innerText = num < 10 ? '0' + num : num;
-                    ballsContainer.appendChild(b);
-                });
-
-                col.stars.forEach(num => {
-                    let b = document.createElement('div');
-                    b.className = 'h-ball h-star';
-                    b.innerText = num < 10 ? '0' + num : num;
-                    ballsContainer.appendChild(b);
-                });
-
-                itemDiv.appendChild(ballsContainer);
-                itemDiv.appendChild(ballsContainer);
+                itemDiv.innerHTML = `<span>🕒 ${col.time}</span> <span class="history-nums">${col.mains.map(n=>n<10?'0'+n:n).join(' ')} + ${col.stars.map(n=>n<10?'0'+n:n).join(' ')}</span>`;
                 listElem.appendChild(itemDiv);
             });
-
-            listElem.scrollTop = listElem.scrollHeight;
         }
 
         function clearHistory() {
             savedColumns = [];
-            document.getElementById('historyList').innerHTML = '<div class="empty-history" id="emptyMsg">Δεν υπάρχουν αποθηκευμένες στήλες ακόμα. Πατήστε εκκίνηση κλήρωσης!</div>';
-            document.getElementById('fairyBanner').innerHTML = "🧚‍♀️ Η νεράιδα του δάσους περιμένει να ξεκινήσετε τη μαγική κλήρωση!";
+            document.getElementById('historyList').innerHTML = '<div style="text-align:center; font-size:0.7rem; color:#888;">Ιστορικό Αποθηκευμένων Στηλών</div>';
+            document.getElementById('fairyBanner').innerHTML = "🧚‍♀️ Η νεράιδα περιμένει!";
         }
 
         function getRandomUnique(count, max) {
@@ -941,14 +591,7 @@
             return arr;
         }
 
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        window.onload = () => {
-            initDrums();
-            animate();
-        };
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
     </script>
 </body>
 </html>
