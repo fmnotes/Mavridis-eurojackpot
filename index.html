@@ -3,409 +3,495 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- Ρυθμίσεις για να φαίνεται σαν ΠΡΑΓΜΑΤΙΚΗ ΕΦΑΡΜΟΓΗ στο iPhone -->
+    
+    <!-- iOS PWA Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Eurojackpot Mavridis">
+    <meta name="apple-mobile-web-app-title" content="Eurojackpot">
     
-    <title>Eurojackpot Mega Mavridis Live</title>
+    <!-- App Icons -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="apple-touch-icon.png">
+
+    <title>Eurojackpot Mega Mavridis Live 3D</title>
+    
+    <!-- Three.js Library for 3D Graphics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(135deg, #09122c, #1b1b3a, #2c163a);
+            background: #080414;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 15px;
             overflow-x: hidden;
             padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
         }
 
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .ui-overlay {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            pointer-events: none;
+        }
+
+        .interactive {
+            pointer-events: auto;
+        }
+
         header {
             text-align: center;
-            margin-bottom: 15px;
             margin-top: 10px;
+            margin-bottom: 10px;
+            background: rgba(15, 8, 30, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(241, 196, 15, 0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
 
         h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: #f1c40f;
-            text-shadow: 0 0 15px rgba(241, 196, 15, 0.7);
-            margin-bottom: 3px;
+            text-shadow: 0 0 12px rgba(241, 196, 15, 0.8);
         }
 
         .subtitle {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #ff9ff3;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-            max-width: 480px;
-            align-items: center;
-        }
-
-        .fairy-banner {
-            text-align: center;
+        .fairy-status {
             font-size: 1rem;
             color: #ff9ff3;
             font-weight: bold;
-            min-height: 24px;
-            text-shadow: 0 0 10px rgba(255,159,243,0.6);
+            text-shadow: 0 0 10px rgba(255,159,243,0.8);
+            margin: 10px 0;
+            background: rgba(0,0,0,0.5);
+            padding: 6px 16px;
+            border-radius: 15px;
         }
 
-        .drum-card {
-            background: rgba(25, 12, 50, 0.85);
+        .results-panel {
+            background: rgba(18, 10, 36, 0.85);
+            backdrop-filter: blur(12px);
             border: 2px solid rgba(241, 196, 15, 0.4);
             border-radius: 20px;
-            padding: 15px;
+            padding: 12px;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            margin-top: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
         }
 
-        .drum-title {
-            font-size: 1.1rem;
-            font-weight: bold;
+        .section-title {
+            font-size: 0.85rem;
             color: #ffeaa7;
-            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
             text-align: center;
         }
 
-        .mobile-drum {
-            width: 125px;
-            height: 125px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.25), rgba(15, 8, 40, 0.95));
-            border: 4px solid #d4af37;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: inset 0 0 25px rgba(0,0,0,0.8), 0 0 15px rgba(241, 196, 15, 0.4);
-            margin-bottom: 12px;
-            overflow: hidden;
-        }
-
-        .mobile-drum.spinning {
-            animation: drumRotate 0.5s linear infinite;
-        }
-
-        @keyframes drumRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .drum-center-text {
-            font-size: 1rem;
-            color: #ff9ff3;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .slots-container {
+        .balls-row {
             display: flex;
             gap: 8px;
             justify-content: center;
+            margin-bottom: 10px;
         }
 
-        .slot {
-            width: 38px;
-            height: 38px;
+        .ball-slot {
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            background: #19102f;
-            border: 2px dashed #6c5ce7;
+            background: rgba(255,255,255,0.05);
+            border: 2px dashed rgba(241, 196, 15, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            color: #a29bfe;
+            color: #f1c40f;
+            transition: all 0.4s ease;
         }
 
-        .slot.filled {
-            background: radial-gradient(circle at 30% 30%, #f39c12, #d35400);
-            border: 2px solid #f1c40f;
+        .ball-slot.star-slot {
+            border-color: rgba(255, 107, 129, 0.5);
+            color: #ff7675;
+        }
+
+        .ball-slot.filled {
+            background: radial-gradient(circle at 35% 35%, #ffeaa7, #d35400);
+            border: 2px solid #fff;
+            color: #000;
+            box-shadow: 0 0 15px rgba(241, 196, 15, 0.9);
+            transform: scale(1.08);
+        }
+
+        .ball-slot.star-slot.filled {
+            background: radial-gradient(circle at 35% 35%, #ff7675, #c0392b);
             color: #fff;
-            transform: scale(1.1);
-            box-shadow: 0 0 12px rgba(241, 196, 15, 0.8);
+            box-shadow: 0 0 15px rgba(255, 107, 129, 0.9);
         }
 
-        .star-slot.filled {
-            background: radial-gradient(circle at 30% 30%, #ff6b81, #c0392b);
-            border: 2px solid #ff7675;
-            box-shadow: 0 0 12px rgba(255, 107, 129, 0.8);
-        }
-
-        .control-panel {
+        .controls {
             display: flex;
             gap: 10px;
             width: 100%;
-            justify-content: center;
-            margin-top: 5px;
+            margin-top: 10px;
         }
 
-        .btn-draw {
-            background: linear-gradient(135deg, #e056fd, #686de0);
-            color: #fff;
+        .btn {
             border: none;
-            padding: 15px 25px;
-            font-size: 1.1rem;
+            padding: 14px;
+            font-size: 1rem;
             font-weight: bold;
-            border-radius: 30px;
+            border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(224, 86, 253, 0.4);
+            transition: all 0.2s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg, #e056fd, #686de0);
+            color: white;
             flex: 2;
         }
 
-        .btn-clear {
-            background: linear-gradient(135deg, #eb4d4b, #b71540);
-            color: #fff;
-            border: none;
-            padding: 15px 15px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
+        .btn-main:active {
+            transform: scale(0.96);
+        }
+
+        .btn-sec {
+            background: rgba(255,255,255,0.15);
+            color: white;
             flex: 1;
         }
 
-        .history-card {
-            background: rgba(25, 12, 50, 0.85);
-            border: 2px solid rgba(241, 196, 15, 0.3);
-            border-radius: 20px;
-            padding: 15px;
-            width: 100%;
-            max-height: 220px;
+        .history-box {
+            max-height: 120px;
             overflow-y: auto;
-        }
-
-        .history-title {
-            font-size: 1.05rem;
-            font-weight: bold;
-            color: #f1c40f;
-            margin-bottom: 10px;
-            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
+            padding: 8px;
         }
 
         .history-item {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
-            padding: 8px 10px;
-            margin-bottom: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .history-header {
+            font-size: 0.8rem;
+            color: #ff9ff3;
             display: flex;
             justify-content: space-between;
-            font-size: 0.75rem;
-            color: #ff9ff3;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .history-balls {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        .h-ball {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: #f39c12;
-            color: #fff;
-            font-size: 0.75rem;
+        .history-nums {
+            color: #ffeaa7;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .h-star {
-            background: #ff6b81;
-        }
-
-        .empty-history {
-            text-align: center;
-            color: #a4b0be;
-            font-size: 0.85rem;
-            font-style: italic;
-            padding: 10px;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Eurojackpot Mega Mavridis</h1>
-        <div class="subtitle">✨ Μαγική Κλήρωση ✨</div>
-    </header>
+    <div id="canvas-container"></div>
 
-    <div class="app-container">
-        
-        <div class="fairy-banner" id="fairyBanner">🧚‍♀️ Η νεράιδα είναι έτοιμη!</div>
+    <div class="ui-overlay">
+        <header class="interactive">
+            <h1>Eurojackpot Mega Mavridis</h1>
+            <div class="subtitle">3D Live Magic Draw</div>
+        </header>
 
-        <div class="drum-card">
-            <div class="drum-title">⭐ Βασικοί Αριθμοί (1 - 50)</div>
-            <div class="mobile-drum" id="drumMain">
-                <div class="drum-center-text">5 / 50</div>
+        <div class="fairy-status" id="fairyStatus">🧚‍♀️ Η Νεράιδα περιμένει το πρόσταγμά σου!</div>
+
+        <div class="results-panel interactive">
+            <div class="section-title">⭐ Βασικοί Αριθμοί (1 - 50)</div>
+            <div class="balls-row" id="mainSlots">
+                <div class="ball-slot">--</div>
+                <div class="ball-slot">--</div>
+                <div class="ball-slot">--</div>
+                <div class="ball-slot">--</div>
+                <div class="ball-slot">--</div>
             </div>
-            <div class="slots-container" id="slotsMain">
-                <div class="slot">--</div>
-                <div class="slot">--</div>
-                <div class="slot">--</div>
-                <div class="slot">--</div>
-                <div class="slot">--</div>
-            </div>
-        </div>
 
-        <div class="drum-card">
-            <div class="drum-title">💫 Jackpot (1 - 20)</div>
-            <div class="mobile-drum" id="drumStars">
-                <div class="drum-center-text">2 / 20</div>
+            <div class="section-title">💫 Αριθμοί Jackpot (1 - 20)</div>
+            <div class="balls-row" id="starSlots">
+                <div class="ball-slot star-slot">--</div>
+                <div class="ball-slot star-slot">--</div>
             </div>
-            <div class="slots-container" id="slotsStars">
-                <div class="slot star-slot">--</div>
-                <div class="slot star-slot">--</div>
+
+            <div class="controls">
+                <button class="btn btn-main" id="drawBtn" onclick="start3DDraw()">✨ ΕΝΑΡΞΗ ΚΛΗΡΩΣΗΣ</button>
+                <button class="btn btn-sec" onclick="clearHistory()">🧹</button>
             </div>
-        </div>
 
-        <div class="control-panel">
-            <button class="btn-draw" id="btnDraw" onclick="startDraw()">🪄 ΚΛΗΡΩΣΗ</button>
-            <button class="btn-clear" onclick="clearHistory()">ΚΑΘΑΡΙΣΜΟΣ</button>
-        </div>
-
-        <div class="history-card">
-            <div class="history-title">🌟 Αποθηκευμένες Στήλες</div>
-            <div id="historyList">
-                <div class="empty-history" id="emptyMsg">Δεν υπάρχουν στήλες ακόμα.</div>
+            <div class="history-box" id="historyBox">
+                <div style="text-align:center; font-size:0.75rem; color:#888;">Ιστορικό Κληρώσεων</div>
             </div>
         </div>
-
     </div>
 
     <script>
-        const TOTAL_MAIN = 50;
-        const TOTAL_STARS = 20;
-        let isDrawing = false;
-        let savedColumns = [];
+        // --- 3D THREE.JS SETUP ---
+        let scene, camera, renderer;
+        let drumMain, drumStar, fairy;
+        let mainBalls = [], starBalls = [];
+        let isSpinning = false;
 
-        async function startDraw() {
-            if (isDrawing) return;
-            isDrawing = true;
-            document.getElementById('btnDraw').disabled = true;
+        function init3D() {
+            const container = document.getElementById('canvas-container');
+            
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x080414, 0.03);
 
-            const banner = document.getElementById('fairyBanner');
-            const drumMain = document.getElementById('drumMain');
-            const drumStars = document.getElementById('drumStars');
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 2, 12);
 
-            banner.innerHTML = "🧚‍♀️ Η νεράιδα ανακατεύει τα μπαλάκια...";
-            drumMain.classList.add('spinning');
-            drumStars.classList.add('spinning');
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
 
-            const mainSlots = document.querySelectorAll('#slotsMain .slot');
-            const starSlots = document.querySelectorAll('#slotsStars .slot');
-            mainSlots.forEach(s => { s.innerText = '--'; s.className = 'slot'; });
-            starSlots.forEach(s => { s.innerText = '--'; s.className = 'slot star-slot'; });
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
 
-            let drawnMains = getRandomUnique(5, TOTAL_MAIN).sort((a,b) => a-b);
-            let drawnStars = getRandomUnique(2, TOTAL_STARS).sort((a,b) => a-b);
+            const light1 = new THREE.PointLight(0xf1c40f, 2, 50);
+            light1.position.set(0, 10, 10);
+            scene.add(light1);
 
-            await sleep(1500);
+            const light2 = new THREE.PointLight(0xe056fd, 2, 50);
+            light2.position.set(-10, -5, 5);
+            scene.add(light2);
 
-            drumMain.classList.remove('spinning');
-            drumStars.classList.remove('spinning');
-            banner.innerHTML = "✨ Εμφάνιση τυχερών αριθμών!";
+            // Create Glass Drums
+            drumMain = createGlassDrum(-3.2, 2.5, 0x1a8cff);
+            drumStar = createGlassDrum(3.2, 2.5, 0xff3366);
+
+            // Create Balls Inside
+            mainBalls = createBallsInside(drumMain, 50, 0xf1c40f);
+            starBalls = createBallsInside(drumStar, 20, 0xff6b81);
+
+            // Fairy (Magical Glowing Sphere with Particle Trail)
+            fairy = createFairy();
+            scene.add(fairy);
+
+            window.addEventListener('resize', onWindowResize);
+            animate();
+        }
+
+        function createGlassDrum(x, y, glowColor) {
+            const group = new THREE.Group();
+            group.position.set(x, y, 0);
+
+            // Glass Sphere
+            const geo = new THREE.IcosahedronGeometry(2.2, 3);
+            const mat = new THREE.MeshPhysicalMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.35,
+                roughness: 0.1,
+                transmission: 0.9,
+                thickness: 0.8,
+                clearcoat: 1
+            });
+            const glass = new THREE.Mesh(geo, mat);
+            group.add(glass);
+
+            // Metallic Ring Frame
+            const ringGeo = new THREE.TorusGeometry(2.25, 0.08, 16, 100);
+            const ringMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9, roughness: 0.2 });
+            const ring1 = new THREE.Mesh(ringGeo, ringMat);
+            const ring2 = new THREE.Mesh(ringGeo, ringMat);
+            ring2.rotation.x = Math.PI / 2;
+            group.add(ring1);
+            group.add(ring2);
+
+            scene.add(group);
+            return group;
+        }
+
+        function createBallsInside(drumGroup, count, colorHex) {
+            const balls = [];
+            const ballGeo = new THREE.SphereGeometry(0.22, 16, 16);
+            
+            for (let i = 0; i < count; i++) {
+                const ballMat = new THREE.MeshStandardMaterial({
+                    color: colorHex,
+                    roughness: 0.3,
+                    metalness: 0.2
+                });
+                const ball = new THREE.Mesh(ballGeo, ballMat);
+                
+                // Random position inside drum sphere
+                const u = Math.random();
+                const r = 1.5 * Math.cbrt(u);
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+
+                ball.position.x = r * Math.sin(phi) * Math.cos(theta);
+                ball.position.y = r * Math.sin(phi) * Math.sin(theta);
+                ball.position.z = r * Math.cos(phi);
+
+                ball.userData = {
+                    velocity: new THREE.Vector3(
+                        (Math.random() - 0.5) * 0.1,
+                        (Math.random() - 0.5) * 0.1,
+                        (Math.random() - 0.5) * 0.1
+                    )
+                };
+
+                drumGroup.add(ball);
+                balls.push(ball);
+            }
+            return balls;
+        }
+
+        function createFairy() {
+            const fairyGroup = new THREE.Group();
+            const coreGeo = new THREE.SphereGeometry(0.3, 16, 16);
+            const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const core = new THREE.Mesh(coreGeo, coreMat);
+            fairyGroup.add(core);
+
+            const glowGeo = new THREE.SphereGeometry(0.6, 16, 16);
+            const glowMat = new THREE.MeshBasicMaterial({ color: 0xff9ff3, transparent: true, opacity: 0.5 });
+            const glow = new THREE.Mesh(glowGeo, glowMat);
+            fairyGroup.add(glow);
+
+            return fairyGroup;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = Date.now() * 0.002;
+
+            // Animate Fairy Floating
+            fairy.position.x = Math.sin(time * 1.5) * 4;
+            fairy.position.y = Math.cos(time * 2) * 1.5 + 3;
+            fairy.position.z = Math.sin(time) * 2 + 2;
+
+            // Rotate Drums & Animate Balls
+            if (isSpinning) {
+                drumMain.rotation.y += 0.08;
+                drumMain.rotation.x += 0.04;
+                drumStar.rotation.y -= 0.08;
+                drumStar.rotation.x -= 0.04;
+
+                mixBalls(mainBalls, 0.12);
+                mixBalls(starBalls, 0.12);
+            } else {
+                drumMain.rotation.y += 0.005;
+                drumStar.rotation.y -= 0.005;
+                mixBalls(mainBalls, 0.01);
+                mixBalls(starBalls, 0.01);
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function mixBalls(ballsList, speedMultiplier) {
+            ballsList.forEach(ball => {
+                ball.position.addScaledVector(ball.userData.velocity, speedMultiplier * 10);
+                if (ball.position.length() > 1.7) {
+                    ball.position.normalize().multiplyScalar(1.7);
+                    ball.userData.velocity.reflect(ball.position.clone().normalize());
+                }
+            });
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // --- DRAW LOGIC ---
+        async function start3DDraw() {
+            if (isSpinning) return;
+            isSpinning = true;
+            document.getElementById('drawBtn').disabled = true;
+
+            const status = document.getElementById('fairyStatus');
+            status.innerHTML = "🧚‍♀️ Η Νεράιδα ανακατεύει τη μαγική γυάλα...";
+
+            // Reset Slots
+            const mSlots = document.querySelectorAll('#mainSlots .ball-slot');
+            const sSlots = document.querySelectorAll('#starSlots .ball-slot');
+            mSlots.forEach(s => { s.innerText = '--'; s.className = 'ball-slot'; });
+            sSlots.forEach(s => { s.innerText = '--'; s.className = 'ball-slot star-slot'; });
+
+            let mains = getRandomUnique(5, 50).sort((a,b) => a-b);
+            let stars = getRandomUnique(2, 20).sort((a,b) => a-b);
+
+            await sleep(2000);
+
+            status.innerHTML = "✨ Φανέρωση τυχερών αριθμών!";
 
             for (let i = 0; i < 5; i++) {
-                await sleep(250);
-                mainSlots[i].innerText = drawnMains[i] < 10 ? '0' + drawnMains[i] : drawnMains[i];
-                mainSlots[i].classList.add('filled');
+                await sleep(400);
+                mSlots[i].innerText = mains[i] < 10 ? '0' + mains[i] : mains[i];
+                mSlots[i].classList.add('filled');
             }
 
             for (let i = 0; i < 2; i++) {
-                await sleep(250);
-                starSlots[i].innerText = drawnStars[i] < 10 ? '0' + drawnStars[i] : drawnStars[i];
-                starSlots[i].classList.add('filled');
+                await sleep(400);
+                sSlots[i].innerText = stars[i] < 10 ? '0' + stars[i] : stars[i];
+                sSlots[i].classList.add('filled');
             }
 
-            const now = new Date();
-            const timeString = now.toLocaleDateString('el-GR') + ' ' + now.toLocaleTimeString('el-GR');
-            
-            savedColumns.push({
-                mains: [...drawnMains],
-                stars: [...drawnStars],
-                time: timeString
-            });
-            renderHistory();
+            isSpinning = false;
+            status.innerHTML = "🎉 Η κλήρωση ολοκληρώθηκε!";
+            document.getElementById('drawBtn').disabled = false;
 
-            banner.innerHTML = "🎉 Η κλήρωση ολοκληρώθηκε!";
-            isDrawing = false;
-            document.getElementById('btnDraw').disabled = false;
+            saveToHistory(mains, stars);
         }
 
-        function renderHistory() {
-            const listElem = document.getElementById('historyList');
-            const emptyMsg = document.getElementById('emptyMsg');
-            if (emptyMsg) emptyMsg.style.display = 'none';
-
-            listElem.innerHTML = '';
-            savedColumns.forEach((col, index) => {
-                let itemDiv = document.createElement('div');
-                itemDiv.className = 'history-item';
-
-                let header = document.createElement('div');
-                header.className = 'history-header';
-                header.innerHTML = `<span><strong>Στήλη #${index + 1}</strong></span><span>${col.time}</span>`;
-                itemDiv.appendChild(header);
-
-                let ballsContainer = document.createElement('div');
-                ballsContainer.className = 'history-balls';
-
-                col.mains.forEach(num => {
-                    let b = document.createElement('div');
-                    b.className = 'h-ball';
-                    b.innerText = num < 10 ? '0' + num : num;
-                    ballsContainer.appendChild(b);
-                });
-
-                col.stars.forEach(num => {
-                    let b = document.createElement('div');
-                    b.className = 'h-ball h-star';
-                    b.innerText = num < 10 ? '0' + num : num;
-                    ballsContainer.appendChild(b);
-                });
-
-                itemDiv.appendChild(ballsContainer);
-                listElem.appendChild(itemDiv);
-            });
-            listElem.scrollTop = listElem.scrollHeight;
+        function saveToHistory(mains, stars) {
+            const box = document.getElementById('historyBox');
+            const time = new Date().toLocaleTimeString('el-GR', { hour: '2-digit', minute: '2-digit' });
+            
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            item.innerHTML = `<span>${time}</span><span class="history-nums">${mains.map(n=>n<10?'0'+n:n).join(' ')} + ${stars.map(n=>n<10?'0'+n:n).join(' ')}</span>`;
+            
+            box.appendChild(item);
+            box.scrollTop = box.scrollHeight;
         }
 
         function clearHistory() {
-            savedColumns = [];
-            document.getElementById('historyList').innerHTML = '<div class="empty-history" id="emptyMsg">Δεν υπάρχουν στήλες ακόμα.</div>';
-            document.getElementById('fairyBanner').innerHTML = "🧚‍♀️ Η νεράιδα είναι έτοιμη!";
+            document.getElementById('historyBox').innerHTML = '<div style="text-align:center; font-size:0.75rem; color:#888;">Ιστορικό Κληρώσεων</div>';
         }
 
         function getRandomUnique(count, max) {
@@ -417,9 +503,10 @@
             return arr;
         }
 
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+        // Start
+        window.onload = init3D;
     </script>
 </body>
 </html>
