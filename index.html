@@ -181,46 +181,17 @@
             width: 105px;
             height: 105px;
             margin-bottom: 5px;
-            perspective: 600px;
         }
 
-        /* 🔮 Οπτικό Εφέ 3D Περιστρεφόμενης Γυάλας */
         .drum-sphere {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.4), rgba(15, 8, 40, 0.95));
+            background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.35), rgba(15, 8, 40, 0.95));
             border: 3.5px solid #d4af37;
             position: relative;
             overflow: hidden;
             box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 22px rgba(241, 196, 15, 0.5);
-            transform-style: preserve-3d;
-            transition: transform 0.1s linear;
-        }
-
-        /* Γραμμές πλέγματος στη γυάλα για να φαίνεται η περιστροφή */
-        .drum-sphere::before {
-            content: '';
-            position: absolute;
-            top: -20%;
-            left: -20%;
-            width: 140%;
-            height: 140%;
-            border-radius: 50%;
-            border: 2px dashed rgba(255, 215, 0, 0.35);
-            pointer-events: none;
-        }
-
-        .drum-sphere::after {
-            content: '';
-            position: absolute;
-            top: 10%;
-            left: 10%;
-            width: 80%;
-            height: 80%;
-            border-radius: 50%;
-            border: 1.5px dotted rgba(255, 159, 243, 0.3);
-            pointer-events: none;
         }
 
         .hatch {
@@ -253,18 +224,17 @@
 
         .ball-inner {
             position: absolute;
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #ffffff, #f1c40f);
             color: #140b2b;
             font-weight: bold;
-            font-size: 0.5rem;
+            font-size: 0.48rem;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.6);
-            transition: transform 0.05s linear;
         }
 
         .star-ball-inner {
@@ -449,4 +419,37 @@
             <div class="fairy-wand" id="fairyWand">🪄</div>
             <div class="sparkle-star star-1">✨</div>
             <div class="sparkle-star star-2">⭐</div>
-            <div class="sparkle-star star-
+            <div class="sparkle-star star-3">✨</div>
+        </div>
+        <div class="fairy-banner" id="fairyBanner">🧚‍♀️ Η μαγική νεράιδα περιμένει!</div>
+    </div>
+
+    <div class="top-section">
+        <div class="drum-section">
+            <div class="drum-title">⭐ Αριθμοί (1-50)</div>
+            <div class="drum-3d-wrapper">
+                <div class="drum-sphere" id="drumSphereMain">
+                    <div class="hatch" id="hatchMain">EXIT</div>
+                </div>
+            </div>
+            <div class="slots-container" id="slotsMain">
+                <div class="slot">--</div><div class="slot">--</div><div class="slot">--</div><div class="slot">--</div><div class="slot">--</div>
+            </div>
+        </div>
+
+        <div class="drum-section">
+            <div class="drum-title">💫 Jackpot (1-12)</div>
+            <div class="drum-3d-wrapper">
+                <div class="drum-sphere" id="drumSphereStars">
+                    <div class="hatch" id="hatchStars">EXIT</div>
+                </div>
+            </div>
+            <div class="slots-container" id="slotsStars">
+                <div class="slot star-slot">--</div><div class="slot star-slot">--</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-panel">
+        <button class="btn-draw" id="btnDraw" onclick="startMagicDraw()">🪄 ΕΚΚΙΝΗΣΗ ΚΛΗΡΩΣΗΣ</button>
+        <button class="btn-clear" onclick="clearHistory()">🧹 ΚΑΘΑΡΙΣ
