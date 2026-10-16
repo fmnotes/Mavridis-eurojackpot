@@ -104,7 +104,7 @@
 
         /* Animation όταν η νεράιδα κάνει ξόρκι */
         .fairy-wand.casting {
-            animation: wandCastAction 0.5s ease-in-out alternate 2;
+            animation: wandCastAction 0.5s ease-in-out alternate infinite;
         }
 
         .sparkle-star {
@@ -327,4 +327,110 @@
             width: 100%;
             max-width: 480px;
             max-height: 105px;
-            overflow-y:
+            overflow-y: auto;
+            z-index: 2;
+            margin-bottom: 2px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .history-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 8px;
+            padding: 4px 8px;
+            margin-bottom: 3px;
+            font-size: 0.65rem;
+            border-left: 2px solid #e056fd;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            color: #ff9ff3;
+            font-weight: bold;
+        }
+
+        .history-balls-row {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .mini-ball {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #f39c12, #d35400);
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.52rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mini-star {
+            background: radial-gradient(circle at 30% 30%, #ff6b81, #c0392b);
+        }
+
+        /* ✨ Ιπτάμενη Μαγική Μπάλα με Χρυσόσκονη */
+        .flying-ball {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.6rem;
+            z-index: 1000;
+            transition: all 0.75s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            pointer-events: none;
+            box-shadow: 0 0 15px #ffd700, 0 0 25px #ff9ff3;
+        }
+
+        /* Σωματίδιο Χρυσόσκονης */
+        .magic-dust-particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999;
+            animation: dustFade 0.6s forwards ease-out;
+        }
+
+        @keyframes dustFade {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.2) translateY(10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="magicCanvas"></canvas>
+
+    <header>
+        <h1>Eurojackpot Mega Mavridis</h1>
+        <div class="subtitle">✨ Magical Live Draw ✨</div>
+    </header>
+
+    <!-- ✨ Μαγική Νεράιδα -->
+    <div class="center-fairy-wrapper">
+        <div class="center-fairy-circle" id="fairyCircle">
+            🧚‍♀️
+            <div class="fairy-wand" id="fairyWand">🪄</div>
+            <div class="sparkle-star star-1">✨</div>
+            <div class="sparkle-star star-2">⭐</div>
+            <div class="sparkle-star star-3">✨</div>
+        </div>
+        <div class="fairy-banner" id="fairyBanner">🧚‍♀️ Η μαγική νεράιδα περιμένει!</div>
+    </div>
+
+    <div class="top-section">
+        <div class="drum-section">
+            <div class="drum-title">⭐ Αριθμοί (1-50)</div>
+            <div class="drum-3d-wrapper">
