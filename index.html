@@ -601,26 +601,26 @@
 
             await sleep(1500);
 
-            // Κλήρωση 5 Βασικών Αριθμών (ενώ η 1η γυάλα γυρίζει)
+            // Κλήρωση 5 Βασικών Αριθμών
             for (let i = 0; i < 5; i++) {
                 await extractBallWithMagic(ballsMain, drawnMains[i], document.getElementById('hatchMain'), mainSlots[i], false);
                 await sleep(300);
             }
 
-            // ΣΤΑΜΑΤΑΕΙ Η ΠΡΩΤΗ ΓΥΑΛΑ
+            // ΣΤΑΜΑΤΑΕΙ Η ΠΡΩΤΗ ΓΥΑΛΑ ΕΔΩ
             isDrawingMain = false;
 
             banner.innerHTML = "💫 Η νεράιδα στέλνει τους αριθμούς Jackpot!";
             playSound('magic');
             await sleep(600);
 
-            // Κλήρωση 2 Jackpot (ενώ η 2η γυάλα γυρίζει)
+            // Κλήρωση 2 Jackpot
             for (let i = 0; i < 2; i++) {
                 await extractBallWithMagic(ballsStars, drawnStars[i], document.getElementById('hatchStars'), starSlots[i], true);
                 await sleep(300);
             }
 
-            // ΣΤΑΜΑΤΑΕΙ ΚΑΙ Η ΔΕΥΤΕΡΗ ΓΥΑΛΑ
+            // ΣΤΑΜΑΤΑΕΙ ΚΑΙ Η ΔΕΥΤΕΡΗ ΓΥΑΛΑ ΕΔΩ
             isDrawingStars = false;
 
             const now = new Date();
