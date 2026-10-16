@@ -452,4 +452,262 @@
 
     <div class="control-panel">
         <button class="btn-draw" id="btnDraw" onclick="startMagicDraw()">🪄 ΕΚΚΙΝΗΣΗ ΚΛΗΡΩΣΗΣ</button>
-        <button class="btn-clear" onclick="clearHistory()">🧹 ΚΑΘΑΡΙΣ
+        <button class="btn-clear" onclick="clearHistory()">🧹 ΚΑΘΑΡΙΣΜΟΣ</button>
+    </div>
+
+    <div class="history-panel" id="historyList">
+        <div style="text-align:center; font-size:0.65rem; color:#888;" id="emptyMsg">🌟 Αποθηκευμένες Στήλες (με Ημερομηνία & Ώρα)</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('magicCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        for (let i = 0; i < 80; i++) {
+            particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, radius: Math.random()*2+0.5, speedY: (Math.random()-0.5)*0.5, speedX: (Math.random()-0.5)*0.5, alpha: Math.random() });
+        }
+
+        function drawMagicBackground() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 220, 150, ${Math.abs(Math.sin(Date.now() * 0.002 + p.alpha))})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(drawMagicBackground);
+        }
+        drawMagicBackground();
+
+        const TOTAL_MAIN = 50, TOTAL_STARS = 12;
+        let ballsMain = [], ballsStars = [], isDrawing = false, audioCtx = null, savedColumns = [];
+
+        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+
+        function playSound(type) {
+            if (!audioCtx) return;
+            try {
+                let osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                if (type === 'tick') {
+                    osc.frequency.setValueAtTime(400 + Math.random() * 200, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.03);
+                } else if (type === 'tink') {
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.12);
+                } else if (type === 'magic') {
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(700, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1800, audioCtx.currentTime + 0.45);
+                    gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.45);
+                }
+            } catch(e){}
+        }
+
+        function initDrums() {
+            const sphereMain = document.getElementById('drumSphereMain');
+            const sphereStars = document.getElementById('drumSphereStars');
+            sphereMain.querySelectorAll('.ball-inner').forEach(b => b.remove());
+            sphereStars.querySelectorAll('.ball-inner').forEach(b => b.remove());
+            ballsMain = []; ballsStars = [];
+
+            for (let i = 1; i <= TOTAL_MAIN; i++) {
+                const ball = document.createElement('div'); ball.className = 'ball-inner'; ball.innerText = i;
+                sphereMain.appendChild(ball); initBallPhysics(ball, 105); ballsMain.push(ball);
+            }
+            for (let i = 1; i <= TOTAL_STARS; i++) {
+                const ball = document.createElement('div'); ball.className = 'ball-inner star-ball-inner'; ball.innerText = i;
+                sphereStars.appendChild(ball); initBallPhysics(ball, 105); ballsStars.push(ball);
+            }
+        }
+
+        function initBallPhysics(ball, size) {
+            ball.x = 10 + Math.random() * (size - 28); ball.y = 10 + Math.random() * (size - 28);
+            ball.vx = (Math.random() - 0.5) * 3.5; ball.vy = (Math.random() - 0.5) * 3.5;
+            ball.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
+        }
+
+        function updatePhysics(balls, size, speedFactor, sphereElem) {
+            let tickPlayed = false;
+            balls.forEach(ball => {
+                if (ball.hidden) return;
+                ball.x += ball.vx * speedFactor; ball.y += ball.vy * speedFactor;
+                const radius = 7.5, center = size / 2;
+                let dx = ball.x + radius - center, dy = ball.y + radius - center;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist > center - radius - 7) {
+                    let angle = Math.atan2(dy, dx);
+                    ball.x = center - radius + (center - radius - 7) * Math.cos(angle) - radius;
+                    ball.y = center - radius + (center - radius - 7) * Math.sin(angle) - radius;
+                    let normalX = Math.cos(angle), normalY = Math.sin(angle);
+                    let dot = ball.vx * normalX + ball.vy * normalY;
+                    ball.vx -= 2 * dot * normalX; ball.vy -= 2 * dot * normalY;
+                    if (isDrawing && !tickPlayed && Math.random() > 0.75) { playSound('tick'); tickPlayed = true; }
+                }
+                ball.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
+            });
+        }
+
+        function animate() {
+            updatePhysics(ballsMain, 105, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereMain'));
+            updatePhysics(ballsStars, 105, isDrawing ? 2.5 : 0.6, document.getElementById('drumSphereStars'));
+            requestAnimationFrame(animate);
+        }
+        initDrums(); animate();
+
+        async function startMagicDraw() {
+            if (isDrawing) return;
+            initAudio(); 
+            isDrawing = true;
+            document.getElementById('btnDraw').disabled = true;
+
+            const banner = document.getElementById('fairyBanner');
+            banner.innerHTML = "🧚‍♀️ Η νεράιδα ετοιμάζει τα μαγικά της!";
+            playSound('magic');
+
+            const mainSlots = document.querySelectorAll('#slotsMain .slot');
+            const starSlots = document.querySelectorAll('#slotsStars .slot');
+            mainSlots.forEach(s => { s.innerText = '--'; s.className = 'slot'; });
+            starSlots.forEach(s => { s.innerText = '--'; s.className = 'slot star-slot'; });
+
+            initDrums();
+            let drawnMains = getRandomUnique(5, TOTAL_MAIN).sort((a,b) => a-b);
+            let drawnStars = getRandomUnique(2, TOTAL_STARS).sort((a,b) => a-b);
+
+            await sleep(1500);
+
+            for (let i = 0; i < 5; i++) {
+                await extractBallWithMagic(ballsMain, drawnMains[i], document.getElementById('hatchMain'), mainSlots[i], false);
+                await sleep(300);
+            }
+
+            banner.innerHTML = "💫 Η νεράιδα στέλνει τους αριθμούς Jackpot!";
+            playSound('magic');
+            await sleep(600);
+
+            for (let i = 0; i < 2; i++) {
+                await extractBallWithMagic(ballsStars, drawnStars[i], document.getElementById('hatchStars'), starSlots[i], true);
+                await sleep(300);
+            }
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('el-GR') + ' ' + now.toLocaleTimeString('el-GR', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+
+            savedColumns.unshift({ mains: [...drawnMains], stars: [...drawnStars], datetime: dateStr });
+            renderHistory();
+
+            banner.innerHTML = "🎉 Η μαγική κλήρωση ολοκληρώθηκε!";
+            isDrawing = false;
+            document.getElementById('btnDraw').disabled = false;
+        }
+
+        async function extractBallWithMagic(ballsArray, targetNum, hatchElem, slotElem, isStar) {
+            const wand = document.getElementById('fairyWand');
+            wand.classList.add('casting');
+            playSound('magic');
+
+            hatchElem.classList.add('open');
+            await sleep(200);
+
+            let ballElem = ballsArray.find(b => parseInt(b.innerText) === targetNum && !b.hidden) || ballsArray.find(b => !b.hidden);
+            if (ballElem) { ballElem.hidden = true; ballElem.style.display = 'none'; }
+            hatchElem.classList.remove('open');
+
+            let wandRect = wand.getBoundingClientRect();
+            let targetRect = slotElem.getBoundingClientRect();
+
+            let flyer = document.createElement('div');
+            flyer.className = 'flying-ball ' + (isStar ? 'star-ball-inner' : '');
+            if (!isStar) { flyer.style.background = 'radial-gradient(circle at 30% 30%, #ffffff, #f1c40f)'; flyer.style.color = '#140b2b'; }
+            flyer.innerText = targetNum < 10 ? '0' + targetNum : targetNum;
+            flyer.style.left = wandRect.left + 'px'; flyer.style.top = wandRect.top + 'px';
+            document.body.appendChild(flyer);
+
+            let dustInterval = setInterval(() => {
+                let rect = flyer.getBoundingClientRect();
+                createDustParticle(rect.left + 10, rect.top + 10, isStar);
+            }, 40);
+
+            setTimeout(() => { 
+                flyer.style.left = targetRect.left + 'px'; 
+                flyer.style.top = targetRect.top + 'px'; 
+            }, 30);
+
+            await sleep(700); 
+            clearInterval(dustInterval);
+            flyer.remove();
+            wand.classList.remove('casting');
+
+            slotElem.innerText = targetNum < 10 ? '0' + targetNum : targetNum;
+            slotElem.classList.add('filled'); 
+            playSound('tink');
+        }
+
+        function createDustParticle(x, y, isStar) {
+            let p = document.createElement('div');
+            p.className = 'magic-dust-particle';
+            p.style.left = (x + (Math.random() - 0.5) * 12) + 'px';
+            p.style.top = (y + (Math.random() - 0.5) * 12) + 'px';
+            p.style.background = isStar ? '#ff7675' : '#ffeaa7';
+            p.style.boxShadow = isStar ? '0 0 8px #ff6b81' : '0 0 8px #ffd700';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 600);
+        }
+
+        function renderHistory() {
+            const listElem = document.getElementById('historyList');
+            listElem.innerHTML = '';
+            savedColumns.forEach((col, index) => {
+                let itemDiv = document.createElement('div');
+                itemDiv.className = 'history-item';
+                
+                let mainsHtml = col.mains.map(n => `<div class="mini-ball">${n<10?'0'+n:n}</div>`).join('');
+                let starsHtml = col.stars.map(n => `<div class="mini-ball mini-star">${n<10?'0'+n:n}</div>`).join('');
+
+                itemDiv.innerHTML = `
+                    <div class="history-header">
+                        <span>Στήλη #${savedColumns.length - index}</span>
+                        <span>🕒 ${col.datetime}</span>
+                    </div>
+                    <div class="history-balls-row">
+                        ${mainsHtml}
+                        <span style="color:#f1c40f; font-weight:bold; margin:0 2px;">+</span>
+                        ${starsHtml}
+                    </div>
+                `;
+                listElem.appendChild(itemDiv);
+            });
+        }
+
+        function clearHistory() {
+            savedColumns = [];
+            document.getElementById('historyList').innerHTML = '<div style="text-align:center; font-size:0.65rem; color:#888;" id="emptyMsg">🌟 Αποθηκευμένες Στήλες (με Ημερομηνία & Ώρα)</div>';
+            document.getElementById('fairyBanner').innerHTML = "🧚‍♀️ Η μαγική νεράιδα περιμένει!";
+        }
+
+        function getRandomUnique(count, max) {
+            let arr = [];
+            while(arr.length < count){
+                let r = Math.floor(Math.random() * max) + 1;
+                if(arr.indexOf(r) === -1) arr.push(r);
+            }
+            return arr;
+        }
+
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+    </script>
+</body>
+</html>
